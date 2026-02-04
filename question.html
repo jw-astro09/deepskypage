@@ -4,40 +4,38 @@
 <meta charset="UTF-8">
 <title>질문 게시판</title>
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:#0b0f2b;
-  color:white;
-}
-header {
-  background: linear-gradient(to right,#0d1b52,#1b2f80);
-  padding:20px;
-  text-align:center;
-}
-.card {
-  background:#161b4a;
-  padding:15px;
-  border-radius:10px;
-  margin:10px;
-}
-input, button {
-  padding:8px;
-  margin:5px 0;
-}
-
-footer {
-  position: fixed;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-  color: #aaa;
-  font-size: 12px;
-}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b0f2b;
+    color: white;
+  }
+  header {
+    background: linear-gradient(to right, #0d1b52, #1b2f80);
+    padding: 20px;
+    text-align: center;
+  }
+  .card {
+    background: #161b4a;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px;
+  }
+  input, button {
+    padding: 8px;
+    margin: 5px 0;
+  }
+  footer {
+    position: fixed;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+  }
 </style>
 </head>
 <body>
-
 <header>
   <h2>질문 게시판</h2>
   <button onclick="logout()">로그아웃</button>
@@ -46,7 +44,6 @@ footer {
 <h3>질문 남기기</h3>
 <input id="qInput" placeholder="질문 입력">
 <button onclick="addQuestion()">등록</button>
-
 <hr>
 <div id="questionList"></div>
 
@@ -64,102 +61,93 @@ const firebaseConfig = {
   messagingSenderId: "730586449237",
   appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
 };
-
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.database();
 
 const ADMIN_EMAIL = "2jw5464@gmail.com";
-let isAdmin=false;
-let isLoggedIn=false;
-let currentUserName="";
+let isAdmin = false;
+let isLoggedIn = false;
+let currentUserName = "";
 
-/* 로그인 안 했으면 차단 */
-auth.onAuthStateChanged(user=>{
-  if(!user){
-    alert("로그인이 필요합니다.");
-    location.href="login.html";
-  } else {
-    isLoggedIn=true;
-    currentUserName=user.displayName||user.email;
-    isAdmin = (user.email===ADMIN_EMAIL);
-    loadQuestions();
+// 로그인 상태 확인
+auth.onAuthStateChanged(user => {
+  if(user) {
+    isLoggedIn = true;
+    currentUserName = user.displayName || user.email;
+    isAdmin = (user.email === ADMIN_EMAIL);
   }
+  loadQuestions();
 });
 
-function logout(){
-  auth.signOut().then(()=>location.href="login.html");
+// 로그아웃
+function logout() {
+  auth.signOut().then(() => location.href = "login.html");
 }
 
-/* 질문 등록 */
-function addQuestion(){
-  const q=document.getElementById("qInput").value;
-  if(q==="") return;
+// 질문 등록
+function addQuestion() {
+  const q = document.getElementById("qInput").value.trim();
+  if(!q) return;
 
   db.ref("questions").push({
-    question:q,
-    answer:""
-  }).then(()=>{
-    document.getElementById("qInput").value="";
-    // 실시간 업데이트가 느릴 수 있으므로 로드 한번 더
+    question: q,
+    answer: ""
+  }).then(() => {
+    document.getElementById("qInput").value = "";
     loadQuestions();
-  });
+  }).catch(err => alert("질문 등록 실패: " + err.message));
 }
 
+// 질문 불러오기
+function loadQuestions() {
+  db.ref("questions").on("value", snap => {
+    const list = document.getElementById("questionList");
+    list.innerHTML = "";
+    snap.forEach(child => {
+      const data = child.val();
+      const key = child.key;
 
-/* 불러오기 */
-function loadQuestions(){
-  db.ref("questions").on("value",snap=>{
-    const list=document.getElementById("questionList");
-    list.innerHTML="";
+      let html = `<div class="card">
+        <b>Q:</b> ${data.question}<br>
+        <b>A:</b> ${data.answer || "미답변"}<br>
+        ${data.answerBy ? `<small>${data.answerBy}</small><br>` : ""}`;
 
-    snap.forEach(child=>{
-      const data=child.val();
-      const key=child.key;
-
-      let html=`<div class="card">
-<b>Q:</b> ${data.question}<br>
-<b>A:</b> ${data.answer||"미답변"}<br>
-${data.answerBy?`<small>✍ ${data.answerBy}</small><br>`:""}
-`;
-
-      if(isLoggedIn){
-        html+=`
-<input id="a_${key}" placeholder="답변 입력">
-<button onclick="saveAnswer('${key}')">답변</button>
-`;
+      if(isLoggedIn) {
+        html += `<input id="a_${key}" placeholder="답변 입력">
+                 <button onclick="saveAnswer('${key}')">답변</button>`;
       }
 
-      if(isAdmin){
-        html+=`
-<button onclick="deleteQ('${key}')">삭제</button>
-`;
+      if(isAdmin) {
+        html += `<button onclick="deleteQ('${key}')">삭제</button>`;
       }
 
-      html+=`</div>`;
-      list.innerHTML+=html;
+      html += `</div>`;
+      list.innerHTML += html;
     });
   });
 }
 
-function saveAnswer(key){
-  const val=document.getElementById("a_"+key).value;
-  db.ref("questions/"+key).update({
-    answer:val,
-    answerBy:currentUserName
+// 답변 저장
+function saveAnswer(key) {
+  const val = document.getElementById("a_" + key).value.trim();
+  db.ref("questions/" + key).update({
+    answer: val,
+    answerBy: currentUserName
   });
 }
 
-function deleteQ(key){
-  if(confirm("삭제할까요?")){
-    db.ref("questions/"+key).remove();
+// 질문 삭제
+function deleteQ(key) {
+  if(confirm("삭제할까요?")) {
+    db.ref("questions/" + key).remove();
   }
 }
 </script>
 
 <footer>
-© 2026 복성고 천문 & 항공우주 동아리 | All Rights Reserved
+  © 2026 복성고 천문 & 항공우주 동아리 | All Rights Reserved
 </footer>
-
 </body>
 </html>

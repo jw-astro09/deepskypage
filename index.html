@@ -2,15 +2,41 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>천문 & 항공우주 동아리</title>
+<title>복성고 천문 & 항공우주 동아리</title>
 
 <style>
+/* 기존 스타일 유지 및 추가 */
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: #0b0f2b;
   color: white;
 }
+
+/* 상단 인증 바 스타일 (사진 게시판과 동일하게) */
+.auth-bar {
+  text-align: left; /* 왼쪽 정렬 */
+  padding: 10px 20px;
+  background: #070a1d;
+  font-size: 14px;
+}
+
+.auth-bar button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #3a5aff;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.auth-bar button:hover {
+  background: #5a76ff;
+}
+
+.hidden { display: none; }
 
 header {
   background: linear-gradient(to right, #0d1b52, #1b2f80);
@@ -31,15 +57,24 @@ nav a {
   font-weight: bold;
 }
 
-nav a:hover {
-  color: #7fc7ff;
-}
+nav a:hover { color: #7fc7ff; }
 
 /* 슬라이드 */
 .slider {
   width: 100%;
   height: 500px;
   overflow: hidden;
+  position: relative;
+}
+
+.slider-title {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.5);
+  padding: 5px 15px;
+  border-radius: 20px;
 }
 
 .slider img {
@@ -55,15 +90,7 @@ nav a:hover {
   background-color: #0e1440;
 }
 
-.weekly h2 {
-  color: #7fc7ff;
-}
-
-.weekly textarea {
-  width: 80%;
-  max-width: 600px;
-  height: 80px;
-}
+.weekly h2 { color: #7fc7ff; }
 
 .card {
   background-color: #161b4a;
@@ -71,6 +98,17 @@ nav a:hover {
   border-radius: 10px;
   margin: 20px auto;
   max-width: 800px;
+}
+
+button.save-btn {
+  background: #28a745;
+  padding: 8px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 footer {
@@ -85,8 +123,14 @@ footer {
 
 <body>
 
+<div class="auth-bar">
+    <span id="userStatus">불러오는 중...</span>
+    <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
+    <button id="logoutBtn" class="hidden">로그아웃</button>
+</div>
+
 <header>
-  <img src="logo.png" style="width:120px;"><br>
+  <img src="logo.png" style="width:120px;" onerror="this.style.display='none'"><br>
   <h1>복성고 천문 & 항공우주 동아리</h1>
 </header>
 
@@ -94,37 +138,31 @@ footer {
   <a href="index.html">홈</a>
   <a href="question.html">질문</a>
   <a href="login.html">로그인</a>
+  <a href="activity.html">활동 사진</a>
+  <a href="resource.html">자료실</a>
 </nav>
 
-<!-- 이번 주 프로그램 -->
 <section class="weekly">
-  <h2>📅 이번 주 동아리 프로그램</h2>
+  <h2>이번 주 동아리 프로그램</h2>
+  <div class="card">
+    <p id="weekProgramText" style="white-space: pre-wrap;">불러오는 중...</p>
 
-<div class="card">
-  <p id="weekProgramText">불러오는 중...</p>
-
-  <!-- 관리자만 보일 입력창 -->
-  <div id="adminProgramBox" style="display:none;">
-    <textarea id="weekProgramInput" rows="4" style="width:100%;" placeholder="이번 주 활동 내용을 입력하세요"></textarea>
-    <button onclick="saveWeekProgram()">저장</button>
+    <div id="adminProgramBox" style="display:none; margin-top:20px; border-top: 1px solid #2d367a; padding-top: 20px;">
+      <textarea id="weekProgramInput" rows="4" style="width:100%; background:#0b0f2b; color:white; border:1px solid #1b2f80; padding:10px;" placeholder="관리자용: 이번 주 활동 내용을 입력하세요"></textarea><br>
+      <button class="save-btn" onclick="saveWeekProgram()">프로그램 업데이트</button>
+    </div>
   </div>
-</div>
-
 </section>
 
-<!-- 사진 슬라이드 -->
 <section class="slider">
-    <div align="center">
-        <p>천체 사진들</p>
-    </div>
-  <img id="slideImage" src="p1.JPG">
+    <div class="slider-title">동아리 관측 기록</div>
+    <img id="slideImage" src="p1.JPG">
 </section>
 
 <footer>
   © 2026 복성고 천문 & 항공우주 동아리 | All Rights Reserved
 </footer>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -144,72 +182,74 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.database();
-
 const ADMIN_EMAIL = "2jw5464@gmail.com";
 
-/* 슬라이드 */
-const images = [
-  "p1.JPG",
-  "p2.JPG",
-  "p3.jpg",
-  "p4.jpg",
-  "p5.jpg",
-  "p6.jpg",
-  "p7.jpg"
-];
+/* 1. 로그인 상태 감시 및 로그아웃 구현 */
+auth.onAuthStateChanged(user => {
+  const userStatus = document.getElementById("userStatus");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const adminBox = document.getElementById("adminProgramBox");
 
-let currentIndex = 0;
-const slideImg = document.getElementById("slideImage");
+  if (user) {
+    userStatus.innerText = `${user.displayName || user.email.split('@')[0]}님 접속 중`;
+    loginBtn.classList.add("hidden");
+    logoutBtn.classList.remove("hidden");
 
-setInterval(()=>{
-  currentIndex = (currentIndex + 1) % images.length;
-  slideImg.src = images[currentIndex];
-}, 5000);
+    // 관리자 여부 확인
+    if (user.email === ADMIN_EMAIL) {
+      adminBox.style.display = "block";
+    } else {
+      adminBox.style.display = "none";
+    }
+  } else {
+    userStatus.innerText = "비로그인 상태";
+    loginBtn.classList.remove("hidden");
+    logoutBtn.classList.add("hidden");
+    adminBox.style.display = "none";
+  }
+});
 
-/* 이번 주 프로그램 */
+// 로그아웃 버튼 이벤트
+document.getElementById("logoutBtn").onclick = () => {
+  if(confirm("로그아웃 하시겠습니까?")) {
+    auth.signOut().then(() => {
+      alert("로그아웃 되었습니다.");
+    });
+  }
+};
+
+/* 2. 이번 주 프로그램 불러오기 */
 const programRef = db.ref("weekProgram");
-
-/* 불러오기 */
-programRef.on("value", snapshot=>{
+programRef.on("value", snapshot => {
   const data = snapshot.val();
-  if(data){
-    document.getElementById("weekProgramText").innerText = data.text;
-  } else {
-    document.getElementById("weekProgramText").innerText = "아직 등록되지 않았습니다.";
-  }
+  document.getElementById("weekProgramText").innerText = data ? data.text : "등록된 프로그램이 없습니다.";
 });
 
-/* 관리자만 수정 가능 */
-auth.onAuthStateChanged(user=>{
-  if(user && user.email === ADMIN_EMAIL){
-    document.getElementById("adminProgramBox").style.display = "block";
-  } else {
-    document.getElementById("adminProgramBox").style.display = "none";
-  }
-});
-
-/* 저장 */
-function saveWeekProgram(){
+/* 3. 저장 함수 */
+function saveWeekProgram() {
   const text = document.getElementById("weekProgramInput").value;
-  if(text==="") return;
+  if(!text) return alert("내용을 입력하세요.");
 
   programRef.set({
     text: text,
     updatedAt: new Date().toISOString()
+  }).then(() => {
+    alert("성공적으로 수정되었습니다.");
+    document.getElementById("weekProgramInput").value = "";
   });
-
-  alert("이번 주 프로그램 저장 완료!");
 }
 
+/* 4. 슬라이드 기능 */
+const images = ["p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg", "p7.jpg"];
+let currentIndex = 0;
+const slideImg = document.getElementById("slideImage");
 
-/* 로그인 상태 체크 (페이지는 없음, 상태만 확인) */
-auth.onAuthStateChanged(user=>{
-  if(user && user.email === ADMIN_EMAIL){
-    document.getElementById("adminPanel").style.display = "block";
-  }
-});
+setInterval(() => {
+  currentIndex = (currentIndex + 1) % images.length;
+  slideImg.src = images[currentIndex];
+}, 5000);
 </script>
 
 </body>
 </html>
-

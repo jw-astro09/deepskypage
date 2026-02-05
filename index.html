@@ -1,65 +1,172 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP SKY - 자료실</title>
-    <style>
-        body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#0b0f2b; color:white; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>복성고 천문 & 항공우주 동아리 'DEEP SKY'</title>
 
-        /* 상단 통합 바 */
-        .top-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
-        }
-
-        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
-        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
-        .logo-area span { font-size: 18px; font-weight: bold; }
-
-        .auth-bar { font-size: 14px; display: flex; align-items: center; }
-        .auth-bar button {
-            padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none;
-            background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
-        }
-
-        header { background: linear-gradient(to right,#0d1b52,#1b2f80); padding:40px 20px; text-align:center; }
-        nav { background-color: #11153a; padding: 12px; text-align: center; border-bottom: 1px solid #2d367a; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
-        .card { background:#161b4a; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #2d367a; }
-        
-        input { 
-            padding:12px; margin:5px 0; border-radius: 5px; border: 1px solid #1b2f80; 
-            background: #0b0f2b; color: white; width: 100%; box-sizing: border-box; 
-        }
-
-        .btn-main { background: #3a5aff; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
-        
-        .resource-list { width: 100%; border-collapse: collapse; }
-        .resource-list th, .resource-list td { padding: 15px; text-align: left; border-bottom: 1px solid #2d367a; }
-        .resource-list th { background: #0d1b52; color: #7fc7ff; font-size: 14px; }
-        
-        .download-link { background: #28a745; color: white; padding: 6px 12px; text-decoration: none; border-radius: 5px; font-size: 13px; }
-        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; margin-left: 5px; }
-        
-        .hidden { display: none; }
-        footer { position: fixed; bottom: 0; width: 100%; background: #070a1d; text-align: center; padding: 15px; color: #888; font-size: 12px; border-top: 1px solid #1b2f80; }
-
-        /* --- 반응형 스타일 (모바일 기기) --- */
-@media (max-width: 768px) {
-    .logo-area span { font-size: 15px; }
-    nav a { margin: 0 8px; font-size: 13px; }
-    
-    /* 기존에 td:nth-child(2)를 숨기던 코드를 삭제하여 이름이 보이게 함 */
-    .resource-list th, .resource-list td { padding: 10px 8px; font-size: 12px; }
-    
-    header { padding: 20px; }
-    footer { position: relative; margin-top: 20px; }
+<style>
+/* 기본 스타일 */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #0b0f2b;
+  color: white;
 }
-    </style>
+
+/* 상단 통합 바 (로고 + 로그인 상태) */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #070a1d;
+  border-bottom: 1px solid #1b2f80;
+}
+
+/* 왼쪽 로고 영역 */
+.logo-area {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.logo-area img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.logo-area span {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+/* 오른쪽 로그인 상태 영역 */
+.auth-bar {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.auth-bar button {
+  padding: 5px 12px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #3a5aff;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.auth-bar button:hover {
+  background: #2847d6;
+}
+
+.hidden { display: none; }
+
+/* 헤더 및 네비게이션 */
+header {
+  background: linear-gradient(to right, #0d1b52, #1b2f80);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+nav {
+  background-color: #11153a;
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #2d367a;
+}
+
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover { color: #7fc7ff; }
+
+/* 슬라이드 영역 */
+.slider {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 20px;
+  border-radius: 25px;
+  z-index: 10;
+  font-size: 14px;
+}
+
+.slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* 프로그램 섹션 */
+.weekly {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #0e1440;
+}
+
+.weekly h2 { color: #7fc7ff; margin-bottom: 30px; }
+
+.card {
+  background-color: #161b4a;
+  padding: 30px;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 800px;
+  border: 1px solid #2d367a;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+button.save-btn {
+  background: #28a745;
+  padding: 10px 25px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #070a1d;
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  color: #888;
+  border-top: 1px solid #1b2f80;
+}
+</style>
 </head>
+
 <body>
 
 <div class="top-bar">
@@ -67,6 +174,7 @@
         <img src="logo.png" alt="로고" onerror="this.src='https://via.placeholder.com/35?text=★'"> 
         <span>DEEP SKY</span>
     </a>
+
     <div class="auth-bar">
         <span id="userStatus">불러오는 중...</span>
         <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
@@ -75,48 +183,36 @@
 </div>
 
 <header>
-    <h1>학습 자료실</h1>
-    <p style="opacity: 0.8; font-size: 14px;">여러 자료들을 공유하는 공간입니다.</p>
+  <h1>복성고 천문&항공우주 동아리 <b>'DEEP SKY'</b></h1>
 </header>
 
 <nav>
-    <a href="index.html">홈</a>
-    <!-- <a href="introduce.html">소개</a> -->
-    <a href="question.html">질문</a>
-    <a href="activity.html">활동 사진</a>
-    <a href="resource.html">자료실</a>
+  <!-- <a href="introduce.html">소개</a> -->
+  <a href="question.html">질문</a>
+  <a href="activity.html">활동 사진</a>
+  <a href="resource.html">자료실</a>
 </nav>
 
-<div class="container">
-    <div class="card">
-        <h3 style="margin-top:0; color: #7fc7ff;">자료 검색</h3>
-        <input type="text" id="resSearch" placeholder="자료 제목으로 검색하세요." onkeyup="filterResources()">
-    </div>
+<section class="weekly">
+  <h2>이번 주 동아리 프로그램</h2>
+  <div class="card">
+    <p id="weekProgramText" style="white-space: pre-wrap; font-size: 1.1em; line-height: 1.6;">불러오는 중...</p>
 
-    <div id="uploadSection" class="card hidden">
-        <h3 style="margin-top:0; color: #7fc7ff;">새 자료 등록</h3>
-        <input type="text" id="resTitle" placeholder="자료 제목을 입력하세요">
-        <input type="text" id="resUrl" placeholder="공유 링크 주소 (Google Drive 등)">
-        <button class="btn-main" id="btnSave">자료실에 올리기</button>
+    <div id="adminProgramBox" style="display:none; margin-top:20px; border-top: 1px solid #2d367a; padding-top: 20px;">
+      <textarea id="weekProgramInput" rows="4" style="width:100%; background:#0b0f2b; color:white; border:1px solid #1b2f80; padding:10px; border-radius: 5px;" placeholder="관리자용: 이번 주 활동 내용을 입력하세요"></textarea><br>
+      <button class="save-btn" onclick="saveWeekProgram()">프로그램 업데이트</button>
     </div>
+  </div>
+</section>
 
-    <div class="card" style="padding: 10px; overflow-x: auto;">
-        <table class="resource-list">
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>올린 사람</th>
-                    <th>작업</th>
-                </tr>
-            </thead>
-            <tbody id="resTableBody">
-                <tr><td colspan='3' style='text-align:center; padding: 30px;'>자료를 불러오고 있습니다...</td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+<section class="slider">
+    <div class="slider-title">동아리 관측 기록</div>
+    <img id="slideImage" src="p1.JPG" onerror="this.src='https://via.placeholder.com/1200x600?text=No+Image'">
+</section>
 
-<footer>© DEEP SKY(복성고 과학 동아리) | All rights reserved</footer>
+<footer>
+ © DEEP SKY(복성고 과학 동아리) | All rights reserved | Designed by jw-astro09
+</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -124,112 +220,89 @@
 
 <script>
 const firebaseConfig = {
-    apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
-    authDomain: "clubquestion.firebaseapp.com",
-    databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "clubquestion"
+  apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
+  authDomain: "clubquestion.firebaseapp.com",
+  databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "clubquestion",
+  storageBucket: "clubquestion.firebasestorage.app",
+  messagingSenderId: "730586449237",
+  appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.database();
 const ADMIN_EMAIL = "2jw5464@gmail.com";
 
-let currentUserInfo = { email: "", name: "" };
-
+/* 1. 로그인 상태 감시 및 로그아웃 구현 */
 auth.onAuthStateChanged(user => {
-    const userStatus = document.getElementById("userStatus");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const uploadSection = document.getElementById("uploadSection");
+  const userStatus = document.getElementById("userStatus");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const adminBox = document.getElementById("adminProgramBox");
 
-    if (user) {
-        currentUserInfo.email = user.email;
-        // Firebase Auth의 displayName(이름)을 가져옴, 없으면 이메일 아이디 사용
-        currentUserInfo.name = user.displayName || user.email.split('@')[0];
-        
-        userStatus.innerText = `${currentUserInfo.name}님`;
-        loginBtn.classList.add("hidden");
-        logoutBtn.classList.remove("hidden");
-        uploadSection.classList.remove("hidden");
+  if (user) {
+    userStatus.innerText = `${user.displayName || user.email.split('@')[0]}님`;
+    loginBtn.classList.add("hidden");
+    logoutBtn.classList.remove("hidden");
+
+    if (user.email === ADMIN_EMAIL) {
+      adminBox.style.display = "block";
     } else {
-        userStatus.innerText = "비로그인 상태";
-        loginBtn.classList.remove("hidden");
-        logoutBtn.classList.add("hidden");
-        uploadSection.classList.add("hidden");
+      adminBox.style.display = "none";
     }
-    loadResources();
+  } else {
+    userStatus.innerText = "비로그인 상태";
+    loginBtn.classList.remove("hidden");
+    logoutBtn.classList.add("hidden");
+    adminBox.style.display = "none";
+  }
 });
 
-document.getElementById("btnSave").onclick = async () => {
-    const title = document.getElementById("resTitle").value.trim();
-    const url = document.getElementById("resUrl").value.trim();
-    if(!title || !url) return alert("항목을 모두 입력하세요.");
-
-    try {
-        await db.ref('resources').push({
-            title: title,
-            url: url,
-            ownerName: currentUserInfo.name, // 계정 이름 저장
-            ownerEmail: currentUserInfo.email,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-        alert("등록 성공!");
-        document.getElementById("resTitle").value = "";
-        document.getElementById("resUrl").value = "";
-    } catch(e) { alert("오류 발생"); }
+document.getElementById("logoutBtn").onclick = () => {
+  if(confirm("로그아웃 하시겠습니까?")) {
+    auth.signOut().then(() => {
+      alert("로그아웃 되었습니다.");
+    });
+  }
 };
 
-function loadResources() {
-    const tableBody = document.getElementById("resTableBody");
-    db.ref('resources').orderByChild('timestamp').on('value', snapshot => {
-        tableBody.innerHTML = "";
-        const data = snapshot.val();
-        if(!data) {
-            tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>등록된 자료가 없습니다.</td></tr>";
-            return;
-        }
+/* 2. 이번 주 프로그램 불러오기 */
+const programRef = db.ref("weekProgram");
+programRef.on("value", snapshot => {
+  const data = snapshot.val();
+  document.getElementById("weekProgramText").innerText = data ? data.text : "등록된 프로그램이 없습니다.";
+});
 
-        const items = Object.keys(data).map(key => ({ key, ...data[key] })).reverse();
-        items.forEach(item => {
-            const row = document.createElement("tr");
-            let deleteBtn = "";
-            
-            if(auth.currentUser && (auth.currentUser.email === ADMIN_EMAIL || auth.currentUser.email === item.ownerEmail)) {
-                deleteBtn = `<button class="delete-btn" onclick="deleteRes('${item.key}')">삭제</button>`;
-            }
+/* 3. 저장 함수 */
+function saveWeekProgram() {
+  const text = document.getElementById("weekProgramInput").value;
+  if(!text) return alert("내용을 입력하세요.");
 
-            // 표시할 이름 결정 (이름이 없으면 아이디나 '익명' 표시)
-            const displayName = item.ownerName || (item.ownerEmail ? item.ownerEmail.split('@')[0] : "익명");
-
-            row.innerHTML = `
-                <td style="font-weight: bold;">${item.title}</td>
-                <td style="font-size:12px; color:#7fc7ff;">${displayName}</td>
-                <td>
-                    <div style="display: flex;">
-                        <a href="${item.url}" target="_blank" class="download-link">보기</a>
-                        ${deleteBtn}
-                    </div>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    });
+  programRef.set({
+    text: text,
+    updatedAt: new Date().toISOString()
+  }).then(() => {
+    alert("성공적으로 수정되었습니다.");
+    document.getElementById("weekProgramInput").value = "";
+  });
 }
 
-window.deleteRes = (key) => { if(confirm("삭제하시겠습니까?")) db.ref('resources/' + key).remove(); };
-document.getElementById("logoutBtn").onclick = () => auth.signOut();
+/* 4. 슬라이드 기능 */
+const images = ["p1.JPG", "p2.JPG", "p3.jpg", "p4.jpg", "p5.jpg", "p6.jpg", "p7.jpg"];
+let currentIndex = 0;
+const slideImg = document.getElementById("slideImage");
 
-function filterResources() {
-    const searchTerm = document.getElementById("resSearch").value.toLowerCase();
-    const rows = document.getElementById("resTableBody").getElementsByTagName("tr");
-    for (let row of rows) {
-        const titleColumn = row.getElementsByTagName("td")[0];
-        if (titleColumn) {
-            row.style.display = titleColumn.innerText.toLowerCase().includes(searchTerm) ? "" : "none";
-        }
-    }
-}
+setInterval(() => {
+  currentIndex = (currentIndex + 1) % images.length;
+  slideImg.style.opacity = 0; // 페이드 효과를 주려면 CSS와 연동 필요
+  setTimeout(() => {
+    slideImg.src = images[currentIndex];
+    slideImg.style.opacity = 1;
+  }, 50);
+}, 4000);
 </script>
+
 </body>
 </html>

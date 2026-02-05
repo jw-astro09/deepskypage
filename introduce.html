@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEEP SKY 소개</title>
     <style>
         body {
@@ -11,21 +12,72 @@
             color: white;
         }
 
+        /* 상단 통합 바 (로고 + 로그인 상태) */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #070a1d;
+            border-bottom: 1px solid #1b2f80;
+        }
+
+        /* 왼쪽 로고 영역 */
+        .logo-area {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logo-area img {
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .logo-area span {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        /* 오른쪽 로그인 상태 영역 */
+        .auth-bar {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-bar button {
+            padding: 5px 12px;
+            margin-left: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #3a5aff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .auth-bar button:hover {
+            background: #2847d6;
+        }
+
         header {
             background: linear-gradient(to right, #0d1b52, #1b2f80);
             padding: 40px;
             text-align: center;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 20px;
-        }
-
         nav {
             background-color: #11153a;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
+            border-bottom: 1px solid #2d367a;
         }
 
         nav a {
@@ -40,65 +92,141 @@
         }
 
         section {
-            padding: 40px;
-            max-width: 800px;
+            padding: 40px 20px;
+            max-width: 900px;
             margin: auto;
-        }
-
-        h2 {
-            color: #7fc7ff;
+            padding-bottom: 80px; /* 푸터 여유 공간 */
         }
 
         .card {
             background-color: #161b4a;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #2d367a;
+            line-height: 1.8;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-       footer {
-  position: fixed;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-  color: #aaa;
-  font-size: 12px;
-}
-
-        .logo {
-            font-size: 30px;
+        .card h2 {
+            color: #7fc7ff;
+            margin-top: 30px;
+            border-bottom: 2px solid #3a5aff;
+            display: inline-block;
+            padding-bottom: 5px;
         }
+
+        .logo-img-large {
+            width: 280px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px rgba(127, 199, 255, 0.3));
+        }
+
+        footer {
+            background-color: #070a1d;
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #1b2f80;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .hidden { display: none; }
+        b { color: #7fc7ff; }
     </style>
 </head>
 <body>
 
-<div class="card" style="text-align:center;">
-    <img src="logo.png" alt="동아리 로고" style="width:300px; margin-bottom:20px;">
-
-    <p>
-      우리 동아리의 로고는 <b>천문에 대한 흥미</b>와 <b>항공 우주에 대한 호기심</b>을 상징합니다.
-    </p>
-
-    <p>
-      원형은 천체과 우주를 의미하며,  
-      중앙의 별은 새로운 지식을 향한 탐구 정신을 표현합니다.
-    </p>
-
-    <p>
-      파란색 계열은 과학적 사고와 신뢰를 상징하며,  
-      흰색은 순수한 호기심을 나타냅니다.
-    </p>
-            
-    <p>본 동아리는 복성고 유일의 천문학 및 항공 우주 공학 중점 동아리로, 우리 동아리는 천문학과 항공 우주 과학에 관심 있는 학생들이 모으고 
-        별과 우주, 로켓, 인공위성에 대해 배우고 실험하는 동아리입니다. 24~25기 한국 천문 올림피아드 교육생이 운영할 예정이며 
-        주요 활동으로는 파이썬 프로그래밍, 아두이노 실습, 대형 망원경 관측, 로켓 제작 및 발사 실험 등 이론과 실습을 병행한 프로젝트를 진행할 예정입니다. 
-        천문학과 항공 우주 공학에 관심 있는 학생들과 함께 깊이 있는 탐구 활동을 이어가고자 합니다.
-    </p>
+<div class="top-bar">
+    <a href="index.html" class="logo-area">
+        <img src="logo.png" alt="로고" onerror="this.src='https://via.placeholder.com/35?text=★'"> 
+        <span>DEEP SKY</span>
+    </a>
+    <div class="auth-bar">
+        <span id="userStatus">불러오는 중...</span>
+        <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
+        <button id="logoutBtn" class="hidden">로그아웃</button>
+    </div>
 </div>
-    
 
+<header>
+    <h1>동아리 소개</h1>
+</header>
+
+<nav>
+    <a href="index.html">홈</a>
+    <a href="question.html">질문</a>
+    <a href="activity.html">활동 사진</a>
+    <a href="resource.html">자료실</a>
+</nav>
+
+<section>
+    <div class="card" style="text-align:center;">
+        <img src="logo.png" alt="동아리 로고" class="logo-img-large" onerror="this.style.display='none'">
+
+        <br>
+        <h2>로고의 의미</h2>
+        <p>
+            우리 동아리의 로고는 <b>천문에 대한 흥미</b>와 <b>항공 우주에 대한 호기심</b>을 상징합니다.<br>
+            원형은 천체와 우주를 의미하며, 중앙의 별은 새로운 지식을 향한 탐구 정신을 표현합니다.<br>
+            파란색 계열은 과학적 사고와 신뢰를 상징하며, 흰색은 순수한 호기심을 나타냅니다.
+        </p>
+
+        <h2>동아리 소개</h2>
+        <p style="text-align: justify; text-justify: inter-character;">
+            본 동아리는 <b>복성고 유일의 천문학 및 항공 우주 공학 중점 동아리</b>로, 별과 우주, 로켓, 인공위성에 대해 배우고 실험하는 탐구 공동체입니다. 
+            24~25기 한국 천문 올림피아드 교육생이 운영을 담당하며, 전문성을 바탕으로 체계적인 활동을 제공합니다.
+        </p>
+        
+        <p style="text-align: justify; text-justify: inter-character;">
+            주요 활동으로는 <b>파이썬 프로그래밍, 아두이노 실습, 대형 망원경 관측, 로켓 제작 및 발사 실험</b> 등 이론과 실습을 병행한 프로젝트를 진행합니다. 
+            단순한 지식 습득을 넘어 천문학과 항공 우주 공학에 깊이 있는 탐구 활동을 이어가고자 하는 학생들을 환영합니다.
+        </p>
+    </div>
+</section>
 
 <footer>
-© DEEP SKY(복성고 과학 동아리) | All rights reserved | Designed by Chatgpt, Gemini, jw-astro09
+    © DEEP SKY(복성고 과학 동아리) | All rights reserved | Designed by jw-astro09
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
+  authDomain: "clubquestion.firebaseapp.com",
+  databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "clubquestion",
+  storageBucket: "clubquestion.firebasestorage.app",
+  messagingSenderId: "730586449237",
+  appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+auth.onAuthStateChanged(user => {
+    const userStatus = document.getElementById("userStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (user) {
+        userStatus.innerText = `${user.email.split('@')[0]}님`;
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+    } else {
+        userStatus.innerText = "비로그인 상태";
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+    }
+});
+
+document.getElementById("logoutBtn").onclick = () => {
+    if(confirm("로그아웃 하시겠습니까?")) auth.signOut();
+};
+</script>
+
+</body>
+</html>

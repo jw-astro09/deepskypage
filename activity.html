@@ -2,64 +2,108 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>DEEP SKY에서 촬영한 사진</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP SKY에서의 활동 사진</title>
     <style>
-        body { margin:0; font-family:Arial; background:#0b0f2b; color:white; }
-        header { background: linear-gradient(to right,#0d1b52,#1b2f80); padding:20px; text-align:center; }
-        .auth-bar { text-align: left; padding: 10px 20px; background: #070a1d; font-size: 14px; }
-        .auth-bar button { padding: 5px 10px; margin-left: 10px; border-radius: 5px; border: none; background: #3a5aff; color: white; cursor: pointer; font-weight: bold; }
-        nav { background-color: #11153a; padding: 10px; text-align: center; }
+        body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#0b0f2b; color:white; }
+        
+        /* 상단 바 레이아웃 */
+        .top-bar { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+        }
+
+        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; cursor: pointer; }
+        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
+        .logo-area span { font-size: 18px; font-weight: bold; }
+
+        .auth-bar { font-size: 14px; display: flex; align-items: center; }
+        .auth-bar button { padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none; background: #3a5aff; color: white; cursor: pointer; font-weight: bold; }
+
+        header { background: linear-gradient(to right,#0d1b52,#1b2f80); padding:40px 20px; text-align:center; }
+        nav { background-color: #11153a; padding: 12px; text-align: center; border-bottom: 1px solid #2d367a; }
         nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
         nav a:hover { color: #7fc7ff; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; padding-bottom: 60px; }
-        .card { background:#161b4a; padding:15px; border-radius:10px; margin-bottom:20px; border: 1px solid #2d367a; }
-        input, button { padding:8px; margin:5px 0; border-radius: 5px; border: none; }
-        .upload-btn { background: #3a5aff; color: white; cursor: pointer; font-weight: bold; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
+        .card { background:#161b4a; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #2d367a; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        
+        input { 
+            padding:12px; margin:5px 0; border-radius: 5px; border: 1px solid #1b2f80; 
+            background: #0b0f2b; color: white; width: 90%; box-sizing: border-box; 
+        }
+        .upload-btn { background: #3a5aff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 90%; }
+        
+        /* 사진 그리드 레이아웃 */
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .photo-card { background:#161b4a; padding:15px; border-radius:10px; text-align: center; border: 1px solid #2d367a; }
-        .photo-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; margin-bottom: 10px; }
-        .download-btn { display: inline-block; background: #28a745; text-decoration: none; color: white; padding: 8px 15px; border-radius: 5px; font-size: 14px; margin-top: 5px; }
-        .delete-btn { background: #ff4d4d; color: white; padding: 8px 15px; border-radius: 5px; font-size: 14px; margin-top: 5px; cursor: pointer; }
+        .photo-card { background:#161b4a; padding:15px; border-radius:12px; text-align: center; border: 1px solid #2d367a; transition: 0.2s; }
+        .photo-card:hover { transform: translateY(-5px); }
+        .photo-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; cursor: pointer; }
+        
+        .owner-tag { font-size: 11px; color: #7fc7ff; margin-bottom: 8px; display: block; }
+        .btn-group { display: flex; gap: 5px; justify-content: center; margin-top: 10px; }
+        .download-btn { background: #28a745; text-decoration: none; color: white; padding: 8px 12px; border-radius: 5px; font-size: 13px; font-weight: bold; flex: 1; }
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 8px 12px; border-radius: 5px; font-size: 13px; font-weight: bold; cursor: pointer; flex: 1; }
+        
         .hidden { display: none; }
-        .info-text { font-size: 12px; color: #7fc7ff; margin-bottom: 10px; }
-        footer { position: fixed; bottom: 0; width: 100%; background: #11153a; text-align: center; padding: 10px; color: #aaa; font-size: 12px; }
+        footer { position: fixed; bottom: 0; width: 100%; background: #070a1d; text-align: center; padding: 15px; color: #888; font-size: 12px; border-top: 1px solid #1b2f80; }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .logo-area span { font-size: 15px; }
+            nav a { margin: 0 8px; font-size: 13px; }
+            .photo-grid { grid-template-columns: 1fr; }
+            footer { position: relative; margin-top: 20px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="auth-bar">
-    <span id="userStatus">불러오는 중...</span>
-    <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
-    <button id="logoutBtn" class="hidden">로그아웃</button>
+<div class="top-bar">
+    <a href="index.html" class="logo-area">
+        <img src="logo.png" alt="로고" onerror="this.src='https://via.placeholder.com/35?text=★'"> 
+        <span>DEEP SKY</span>
+    </a>
+    <div class="auth-bar">
+        <span id="userStatus">불러오는 중...</span>
+        <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
+        <button id="logoutBtn" class="hidden">로그아웃</button>
+    </div>
 </div>
 
 <header>
-    <h1>활동 및 천체 사진 게시판</h1>
+    <h1>활동 및 천체 사진</h1>
 </header>
 
+<nav>
+    <a href="index.html">홈</a>
+    <!-- <a href="introduce.html">소개</a> -->
+    <a href="question.html">질문</a>
+    <a href="activity.html">활동 사진</a>
+    <a href="resource.html">자료실</a>
+</nav>
 
 <div class="container">
     <div id="uploadSection" class="card hidden" style="text-align: center;">
-    <h3>새 사진 등록</h3>
-    <p class="info-text">사진을<a href="https://imgbb.com/" target="_blank" style="color:white;">ImgBB</a>에 올린 후 <b>이미지 주소</b>를 복사해 등록해 주세요.</p>
-    <p>사진 업로드 후 사진을 클릭하고 원본 이미지(링크)에서 html의 'img scr='다음에 나오는 링크.jpg 링크를 입력해 주세요</p>
+        <h3 style="margin-top:0; color: #7fc7ff;">새 사진 등록</h3>
+        <p style="font-size:12px; color:#aaa; margin-bottom: 15px;">ImgBB 등 외부 서비스에 업로드 후 <b>직접 링크</b>를 입력해 주세요.</p>
+        
+        <div style="margin-bottom: 15px;">
+            <img id="imagePreview" src="" style="max-width: 100%; max-height: 200px; border-radius: 10px; display: none; margin: 0 auto; border: 2px solid #3a5aff;">
+            <p id="previewText" style="font-size: 12px; color: #888;">링크를 입력하면 미리보기가 나타납니다.</p>
+        </div>
 
-    <div style="margin-bottom: 15px;">
-        <img id="imagePreview" src="" style="max-width: 200px; max-height: 200px; border-radius: 10px; display: none; margin: 0 auto; border: 2px dashed #3a5aff;">
-        <p id="previewText" style="font-size: 12px; color: #aaa;">주소를 입력하면 여기에 미리보기가 나타납니다.</p>
+        <input type="text" id="imageUrlInput" placeholder="이미지 직접 링크 (https://xxxx.jpg)" oninput="updatePreview()"><br>
+        <input type="text" id="imageTitle" placeholder="사진 제목 (예: 260205 개기월식)"><br>
+        <button class="upload-btn" id="doRegister">갤러리에 등록하기</button>
     </div>
-
-    <input type="text" id="imageUrlInput" placeholder="이미지 직접 링크 주소 (http://.../image.jpg)" style="width: 80%;" oninput="updatePreview()"><br>
-    <input type="text" id="imageTitle" placeholder="사진 제목을 입력하세요" style="width: 80%;">
-    <button class="upload-btn" id="doRegister">등록하기</button>
-</div>
 
     <div class="photo-grid" id="photoGrid">
-        <p>사진을 불러오는 중...</p>
+        <p style="text-align: center; grid-column: 1/-1;">사진을 불러오는 중....</p>
     </div>
 </div>
 
-<footer>© DEEP SKY(복성고 과학 동아리) | All rights reserved | Designed by Chatgpt, Gemini, jw-astro09</footer>
+<footer>© DEEP SKY(복성고 과학 동아리) | All rights reserved</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -83,113 +127,123 @@ const ADMIN_EMAIL = "2jw5464@gmail.com";
 
 let currentUser = null;
 
+// 로그인 상태 감지
 auth.onAuthStateChanged(user => {
     currentUser = user;
+    const userStatus = document.getElementById("userStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const uploadSection = document.getElementById("uploadSection");
+
     if (user) {
-        document.getElementById("userStatus").innerText = `${user.email.split('@')[0]}님 접속 중`;
-        document.getElementById("loginBtn").classList.add("hidden");
-        document.getElementById("logoutBtn").classList.remove("hidden");
-        document.getElementById("uploadSection").classList.remove("hidden");
+        const userName = user.displayName || user.email.split('@')[0];
+        userStatus.innerText = `${userName}님`;
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        uploadSection.classList.remove("hidden");
     } else {
-        document.getElementById("userStatus").innerText = "비로그인 상태 (구경만 가능)";
-        document.getElementById("loginBtn").classList.remove("hidden");
-        document.getElementById("logoutBtn").classList.add("hidden");
-        document.getElementById("uploadSection").classList.add("hidden");
+        userStatus.innerText = "비로그인 상태";
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        uploadSection.classList.add("hidden");
     }
     loadPhotos();
 });
 
-document.getElementById("logoutBtn").onclick = () => {
-    if(confirm("로그아웃 하시겠습니까?")) auth.signOut();
-};
-
-// 사진 등록 기능 (Storage 사용 안 함)
-document.getElementById("doRegister").onclick = async () => {
-    const url = document.getElementById("imageUrlInput").value;
-    const title = document.getElementById("imageTitle").value;
-
-    if (!url || !title) return alert("주소와 제목을 모두 입력해주세요.");
-    if (!url.startsWith("http")) return alert("올바른 이미지 주소를 입력해주세요.");
-
-    try {
-        await db.ref('photos_link').push({
-            title: title,
-            url: url,
-            email: currentUser.email,
-            createdAt: firebase.database.ServerValue.TIMESTAMP
-        });
-        alert("등록 성공!");
-        document.getElementById("imageUrlInput").value = "";
-        document.getElementById("imageTitle").value = "";
-    } catch (e) {
-        alert("에러 발생: " + e.message);
-    }
-};
-
-// 입력창에 주소를 넣을 때마다 실행되는 함수
+// 미리보기 업데이트
 function updatePreview() {
-    const url = document.getElementById("imageUrlInput").value;
+    const url = document.getElementById("imageUrlInput").value.trim();
     const previewImg = document.getElementById("imagePreview");
     const previewText = document.getElementById("previewText");
-
-    // 주소가 http로 시작하는지 확인
     if (url.startsWith("http")) {
         previewImg.src = url;
-        previewImg.style.display = "block"; // 이미지 보이기
-        previewText.style.display = "none"; // 안내 문구 숨기기
-        
-        // 만약 이미지 주소가 잘못되어 로드에 실패할 경우 처리
-        previewImg.onerror = function() {
-            this.style.display = "none";
+        previewImg.style.display = "block";
+        previewText.style.display = "none";
+        previewImg.onerror = () => {
+            previewImg.style.display = "none";
             previewText.style.display = "block";
-            previewText.innerText = "유효하지 않은 이미지 주소입니다.";
-            previewText.style.color = "#ff4d4d";
+            previewText.innerText = "유효하지 않은 이미지 링크입니다.";
         };
     } else {
         previewImg.style.display = "none";
         previewText.style.display = "block";
-        previewText.innerText = "주소를 입력하면 여기에 미리보기가 나타납니다.";
-        previewText.style.color = "#aaa";
     }
 }
 
+// 사진 등록
+document.getElementById("doRegister").onclick = async () => {
+    const url = document.getElementById("imageUrlInput").value.trim();
+    const title = document.getElementById("imageTitle").value.trim();
+    
+    if (!url || !title) return alert("주소와 제목을 모두 입력해주세요.");
+    
+    try {
+        const userName = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+        await db.ref('photos_link').push({
+            title: title,
+            url: url,
+            ownerName: userName,
+            ownerEmail: auth.currentUser.email,
+            createdAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        alert("등록되었습니다!");
+        document.getElementById("imageUrlInput").value = "";
+        document.getElementById("imageTitle").value = "";
+        document.getElementById("imagePreview").style.display = "none";
+        document.getElementById("previewText").style.display = "block";
+    } catch (e) { alert("등록 권한이 없습니다."); }
+};
+
+// 사진 목록 불러오기
 function loadPhotos() {
     const photoGrid = document.getElementById("photoGrid");
     db.ref('photos_link').orderByChild('createdAt').on('value', snapshot => {
         photoGrid.innerHTML = "";
         const data = snapshot.val();
-        if (!data) {
-            photoGrid.innerHTML = "<p>등록된 사진이 없습니다.</p>";
-            return;
+        if (!data) { 
+            photoGrid.innerHTML = "<p style='text-align: center; grid-column: 1/-1;'>등록된 사진이 없습니다.</p>"; 
+            return; 
         }
+
         const list = Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse();
+        
         list.forEach(item => {
             const card = document.createElement("div");
             card.className = "photo-card";
-            let deleteBtn = (currentUser && currentUser.email === ADMIN_EMAIL) ? 
-                `<button class="delete-btn" onclick="deletePhoto('${item.id}')">삭제</button>` : "";
+
+            // 삭제 버튼: 관리자 혹은 본인 확인
+            let deleteBtn = "";
+            if (currentUser && (currentUser.email === ADMIN_EMAIL || currentUser.email === item.ownerEmail)) {
+                deleteBtn = `<button class="delete-btn" onclick="deletePhoto('${item.id}')">삭제</button>`;
+            }
 
             card.innerHTML = `
-                <img src="${item.url}" onerror="this.src='https://via.placeholder.com/300?text=Invalid+Link'">
-                <h4>${item.title}</h4>
-                <a href="${item.url}" target="_blank" class="download-btn">원본 보기</a>
-                ${deleteBtn}
+                <img src="${item.url}" onclick="window.open('${item.url}', '_blank')" onerror="this.src='https://via.placeholder.com/300?text=이미지를+불러올+수+없음'">
+                <span class="owner-tag">By ${item.ownerName || "익명"}</span>
+                <h4 style="margin: 5px 0 15px 0;">${item.title}</h4>
+                <div class="btn-group">
+                    <a href="${item.url}" target="_blank" class="download-btn">원본 보기</a>
+                    ${deleteBtn}
+                </div>
             `;
             photoGrid.appendChild(card);
         });
     });
 }
 
+// 사진 삭제
 window.deletePhoto = async (id) => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-        await db.ref('photos_link/' + id).remove();
-        alert("삭제되었습니다.");
+    if (confirm("이 사진을 삭제하시겠습니까?")) {
+        try {
+            await db.ref('photos_link/' + id).remove();
+            alert("삭제되었습니다.");
+        } catch (e) { alert("삭제 권한이 없습니다."); }
     }
+};
+
+document.getElementById("logoutBtn").onclick = () => {
+    if(confirm("로그아웃 하시겠습니까?")) auth.signOut();
 };
 </script>
 </body>
-
 </html>
-
-
-

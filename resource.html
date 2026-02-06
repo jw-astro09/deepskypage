@@ -82,6 +82,21 @@
 </nav>
 
 <div class="container" id="mainContent">
+    <div class="card" id="uploadSection">
+        <h3 style="color: #7fc7ff; margin-top: 0;">자료 등록</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <input type="text" id="newResTitle" placeholder="자료 제목을 입력하세요 (예: 2026 관측 가이드)" 
+                   style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1b2f80; background: #0b0f2b; color: white;">
+            <input type="text" id="newResUrl" placeholder="자료 링크(Google Drive, Dropbox 등 URL)" 
+                   style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1b2f80; background: #0b0f2b; color: white;">
+            <button onclick="uploadResource()" 
+                    style="padding: 10px; background: #3a5aff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                자료 올리기
+            </button>
+        </div>
+        <p style="font-size: 11px; color: #888; margin-top: 10px;">* 자료를 올리면 본인의 이름이 작성자로 공개됩니다.</p>
+    </div>
+
     <div class="search-box">
         <input type="text" id="resSearch" onkeyup="filterResources()" placeholder="자료 제목 검색...">
     </div>
@@ -94,11 +109,9 @@
                 <th>링크</th>
             </tr>
         </thead>
-        <tbody id="resTableBody">
-            </tbody>
+        <tbody id="resTableBody"></tbody>
     </table>
 </div>
-
 <footer>© DEEP SKY | Bokseong Astronomy and Aerospace Club | All rights reserved.</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -161,7 +174,7 @@ function loadResources() {
                 <td>${res.title}</td>
                 <td style="color:#7fc7ff; font-size:12px;">${res.ownerName || "익명"}</td>
                 <td>
-                    <a href="${res.url}" target="_blank" class="download-link">보기</a>
+                    <a href="${res.url}" target="_blank" class="download-link">다운로드/보기</a>
                     ${(isAdmin || isOwner) ? `<button class="delete-btn" onclick="deleteRes('${key}')">삭제</button>` : ""}
                 </td>
             `;
@@ -192,7 +205,44 @@ function logout() {
         });
     }
 }
+
+// 자료 업로드 함수
+function uploadResource() {
+    const title = document.getElementById("newResTitle").value.trim();
+    const url = document.getElementById("newResUrl").value.trim();
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    if (!title || !url) {
+        alert("제목과 링크를 모두 입력해주세요.");
+        return;
+    }
+
+    // URL 형식 간단 체크
+    if (!url.startsWith("http")) {
+        alert("올바른 URL 형식이 아닙니다. (http:// 또는 https:// 포함)");
+        return;
+    }
+
+    const newResRef = db.ref("resources").push();
+    newResRef.set({
+        title: title,
+        url: url,
+        ownerName: user.displayName || user.email.split('@')[0], // 이름 없으면 이메일 앞자리
+        ownerEmail: user.email,
+        timestamp: Date.now()
+    }).then(() => {
+        alert("자료가 성공적으로 등록되었습니다!");
+        document.getElementById("newResTitle").value = "";
+        document.getElementById("newResUrl").value = "";
+    }).catch(error => {
+        alert("등록 실패: " + error.message);
+    });
+}
 </script>
 </body>
 </html>
-

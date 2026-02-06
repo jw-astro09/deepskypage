@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP SKY - 실시간 관측 예보</title>
+    <style>
+       /* 1. 공통 스타일 */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0b0f2b; color: white; }
+
+        /* 2. 상단 바 (인덱스와 동일하게 수정) */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+            height: 60px; position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
+        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
+        .logo-area span { font-size: 18px; font-weight: bold; }
+
+        .auth-bar { font-size: 14px; display: flex; align-items: center; }
+        .auth-bar button {
+            padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none;
+            background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
+        }
+        .hidden { display: none !important; }
+
+       /* 3. 헤더 및 내비게이션 */
+        header { background: linear-gradient(to right, #0d1b52, #1b2f80); padding: 40px 20px; text-align: center; }
+        nav { background: #11153a; padding: 0 10px; text-align: center; border-bottom: 1px solid #2d367a; overflow-x: auto; white-space: nowrap; }
+        nav a { display: inline-block; color: white; padding: 15px 20px; text-decoration: none; font-weight: bold; font-size: 15px; }
+        
+        /* 4. 레이아웃 */
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px 100px; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-header h1 { color: #7fc7ff; font-size: 2rem; margin-bottom: 10px; }
+
+        .card { background: #161b4a; padding: 25px; border-radius: 15px; border: 1px solid #2d367a; margin-bottom: 30px; }
+        .card h2 { color: #7fc7ff; margin-top: 0; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+
+        .media-wrapper { width: 100%; border-radius: 10px; overflow: hidden; background: #070a1d; }
+        iframe { width: 100%; border: none; display: block; }
+
+        .desc-box { font-size: 13px; color: #aaa; margin-top: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; }
+        footer { background: #070a1d; text-align: center; padding: 20px; font-size: 12px; color: #888; border-top: 1px solid #1b2f80; }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="index.html" class="logo-area">
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/35'">
+        <span>DEEP SKY</span>
+    </a>
+    <div class="auth-bar">
+        <span id="userStatus">불러오는 중...</span>
+        <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
+        <button id="logoutBtn" class="hidden" onclick="logout()">로그아웃</button>
+    </div>
+</div>
+
+<header>
+    <h1>기상 정보</h1>
+</header>
+
+<nav>
+    <a href="introduce.html">동아리 소개</a>
+    <a href="question.html">질문 게시판</a>
+    <a href="activity.html">활동 사진</a>
+    <a href="resource.html">자료실</a>
+    <a href="weathrer.html">기상 정보</a>
+</nav>
+
+<div class="container">
+    <div class="card weather-widget">
+    <h3 style="color: #7fc7ff; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+        실시간 기상 정보(순천 복성고등학교)
+    </h3>
+    <div style="width: 100%; border-radius: 12px; overflow: hidden; background: #0b0f2b; border: 1px solid #2d367a;">
+        <iframe 
+    src="https://www.meteoblue.com/ko/weather/widget/seeing/suncheon_republic-of-korea_1835648?geosize=monochrome&layout=dark&clouds=3&planets=1&seeing=1" 
+    frameborder="0"
+    scrolling="true" 
+    allowtransparency="true" 
+    style="width: 100%; height: 500px; border: none;">
+</iframe>
+    </div>
+    <div style="font-size: 12px; color: #888; margin-top: 15px; line-height: 1.6; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+        <p style="margin: 0 0 5px 0; color: #7fc7ff;"><b>위젯 상세 가이드</b></p>
+        * <b>more</b>를 통해 자세한 정보를 볼 수 있습니다.<br>
+        * <b>Clouds:</b> 구름의 양<br>
+        * <b>arcsec:</b> 별이 얼마나 부푼것처럼 보이는가(작을수록 좋음)
+    </div>
+</div>
+
+<div class="card">
+    <h2>실시간 구름 분포 및 예보 (Windy)</h2>
+    <div class="media-wrapper" style="border-radius: 10px; overflow: hidden; background: #000;">
+        <iframe width="650" height="450" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=m/s&zoom=11&overlay=satellite&product=satellite&level=surface&lat=34.892&lon=127.54&message=true" frameborder="0"></iframe>
+    </div>
+    <div class="desc-box">
+        <b>구름 레이어:</b> 현재 보고 계신 화면은 EUMETSAT 모델의 구름 예측 데이터입니다. <br>
+        * 하단 타임라인을 드래그하면 향후 며칠간의 구름 이동 경로를 미리 볼 수 있어 관측 계획 수립에 좋습니다.
+    </div>
+</div>
+
+</div>
+
+<footer>© DEEP SKY | Bokseong Astronomy and Aerospace Club | All rights reserved.</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+// Firebase 설정 (index.html과 동일해야 함)
+const firebaseConfig = {
+    apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
+    authDomain: "clubquestion.firebaseapp.com",
+    databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "clubquestion",
+    storageBucket: "clubquestion.firebasestorage.app",
+    messagingSenderId: "730586449237",
+    appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// 로그인 상태 감지 로직
+auth.onAuthStateChanged(user => {
+    const status = document.getElementById("userStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (user) {
+        status.innerText = `${user.displayName || user.email.split('@')[0]}님`;
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+    } else {
+        status.innerText = "비회원 상태";
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+    }
+});
+
+function logout() { 
+    if(confirm("로그아웃 하시겠습니까?")) {
+        auth.signOut().then(() => { location.reload(); });
+    }
+}
+
+    function refreshSatellite() {
+        const img = document.getElementById('kmaSatellite');
+        // 주소 뒤에 시간을 붙여 매번 새로운 요청으로 인식하게 함
+        const timestamp = new Date().getTime();
+        img.src = "https://www.kma.go.kr/w/repositary/image/sat/gk2a/ko/gk2a_ami_le1b_ir105_ko020lc_latest.png?t=" + timestamp;
+    }
+
+    // 10분(600,000ms)마다 새로고침 실행
+    setInterval(refreshSatellite, 60000);
+</script>
+</body>
+</html>

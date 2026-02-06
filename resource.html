@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP SKY - 자료실</title>
+    <title>자료실 - DEEP SKY</title>
     <style>
-        body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#0b0f2b; color:white; }
+        /* 1. 공통 스타일 */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0b0f2b; color: white; }
 
-        /* 상단 통합 바 */
+        /* 2. 상단 바 (로고 18px, 높이 60px) */
         .top-bar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+            padding: 0 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+            height: 60px; position: sticky; top: 0; z-index: 1000;
         }
-
         .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
         .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
         .logo-area span { font-size: 18px; font-weight: bold; }
@@ -23,100 +25,80 @@
             background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
         }
 
-        header { background: linear-gradient(to right,#0d1b52,#1b2f80); padding:40px 20px; text-align:center; }
-        nav { background-color: #11153a; padding: 12px; text-align: center; border-bottom: 1px solid #2d367a; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        /* 3. 헤더 및 내비게이션 */
+        header { background: linear-gradient(to right, #0d1b52, #1b2f80); padding: 40px 20px; text-align: center; }
+        nav { background: #11153a; padding: 0 10px; text-align: center; border-bottom: 1px solid #2d367a; overflow-x: auto; white-space: nowrap; }
+        nav a { display: inline-block; color: white; padding: 15px 20px; text-decoration: none; font-weight: bold; font-size: 15px; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
-        .card { background:#161b4a; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #2d367a; }
+        /* 4. 본문 및 테이블 */
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px 100px; }
         
-        input { 
-            padding:12px; margin:5px 0; border-radius: 5px; border: 1px solid #1b2f80; 
-            background: #0b0f2b; color: white; width: 100%; box-sizing: border-box; 
+        .search-box { margin-bottom: 20px; }
+        .search-box input {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #1b2f80;
+            background: #161b4a; color: white; font-size: 15px;
         }
 
-        .btn-main { background: #3a5aff; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        table { width: 100%; border-collapse: collapse; background: #161b4a; border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #2d367a; }
+        th { background: #1b2f80; color: #7fc7ff; font-size: 14px; }
         
-        .resource-list { width: 100%; border-collapse: collapse; }
-        .resource-list th, .resource-list td { padding: 15px; text-align: left; border-bottom: 1px solid #2d367a; }
-        .resource-list th { background: #0d1b52; color: #7fc7ff; font-size: 14px; }
+        .download-link { color: #7fc7ff; text-decoration: none; font-weight: bold; }
+        .download-link:hover { text-decoration: underline; }
         
-        .download-link { background: #28a745; color: white; padding: 6px 12px; text-decoration: none; border-radius: 5px; font-size: 13px; }
-        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; margin-left: 5px; }
-        
-        .hidden { display: none; }
-        footer { position: fixed; bottom: 0; width: 100%; background: #070a1d; text-align: center; padding: 15px; color: #888; font-size: 12px; border-top: 1px solid #1b2f80; }
+        .delete-btn { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 12px; }
 
-        /* --- 반응형 스타일 (모바일 기기) --- */
-@media (max-width: 768px) {
-    .logo-area span { font-size: 15px; }
-    nav a { margin: 0 8px; font-size: 13px; }
-    
-    /* 기존에 td:nth-child(2)를 숨기던 코드를 삭제하여 이름이 보이게 함 */
-    .resource-list th, .resource-list td { padding: 10px 8px; font-size: 12px; }
-    
-    header { padding: 20px; }
-    footer { position: relative; margin-top: 20px; }
-}
+        .hidden { display: none !important; }
+        footer { background: #070a1d; text-align: center; padding: 20px; font-size: 12px; color: #888; border-top: 1px solid #1b2f80; position: fixed; bottom: 0; width: 100%; }
+
+        @media (max-width: 600px) {
+            .logo-area span { font-size: 16px; }
+            th, td { padding: 10px; font-size: 13px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="top-bar">
     <a href="index.html" class="logo-area">
-        <img src="logo.png" alt="로고" onerror="this.src='https://via.placeholder.com/35?text=★'"> 
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/35'">
         <span>DEEP SKY</span>
     </a>
     <div class="auth-bar">
-        <span id="userStatus">불러오는 중...</span>
+        <span id="userStatus">확인 중...</span>
         <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
-        <button id="logoutBtn" class="hidden">로그아웃</button>
+        <button id="logoutBtn" class="hidden" onclick="logout()">로그아웃</button>
     </div>
 </div>
 
-<header>
-    <h1>학습 자료실</h1>
-    <p style="opacity: 0.8; font-size: 14px;">여러 자료들을 공유하는 공간입니다.</p>
-</header>
+<header><h1>자료실</h1></header>
 
 <nav>
-    <a href="index.html">홈</a>
-    <!-- <a href="introduce.html">소개</a> -->
-    <a href="question.html">질문</a>
+    <a href="introduce.html">동아리 소개</a>
+    <a href="question.html">질문 게시판</a>
     <a href="activity.html">활동 사진</a>
     <a href="resource.html">자료실</a>
 </nav>
 
-<div class="container">
-    <div class="card">
-        <h3 style="margin-top:0; color: #7fc7ff;">자료 검색</h3>
-        <input type="text" id="resSearch" placeholder="자료 제목으로 검색하세요." onkeyup="filterResources()">
+<div class="container" id="mainContent">
+    <div class="search-box">
+        <input type="text" id="resSearch" onkeyup="filterResources()" placeholder="자료 제목 검색...">
     </div>
 
-    <div id="uploadSection" class="card hidden">
-        <h3 style="margin-top:0; color: #7fc7ff;">새 자료 등록</h3>
-        <input type="text" id="resTitle" placeholder="자료 제목을 입력하세요">
-        <input type="text" id="resUrl" placeholder="공유 링크 주소 (Google Drive 등)">
-        <button class="btn-main" id="btnSave">자료실에 올리기</button>
-    </div>
-
-    <div class="card" style="padding: 10px; overflow-x: auto;">
-        <table class="resource-list">
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>올린 사람</th>
-                    <th>작업</th>
-                </tr>
-            </thead>
-            <tbody id="resTableBody">
-                <tr><td colspan='3' style='text-align:center; padding: 30px;'>자료를 불러오고 있습니다...</td></tr>
+    <table>
+        <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>링크</th>
+            </tr>
+        </thead>
+        <tbody id="resTableBody">
             </tbody>
-        </table>
-    </div>
+    </table>
 </div>
 
-<footer>© DEEP SKY(복성고 과학 동아리) | All rights reserved</footer>
+<footer>© DEEP SKY | All rights reserved.</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -127,7 +109,10 @@ const firebaseConfig = {
     apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
     authDomain: "clubquestion.firebaseapp.com",
     databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
-    projectId: "clubquestion"
+    projectId: "clubquestion",
+    storageBucket: "clubquestion.firebasestorage.app",
+    messagingSenderId: "730586449237",
+    appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -135,81 +120,48 @@ const auth = firebase.auth();
 const db = firebase.database();
 const ADMIN_EMAIL = "2jw5464@gmail.com";
 
-let currentUserInfo = { email: "", name: "" };
-
+// ★ 로그인 체크 로직 ★
 auth.onAuthStateChanged(user => {
-    const userStatus = document.getElementById("userStatus");
+    const status = document.getElementById("userStatus");
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
-    const uploadSection = document.getElementById("uploadSection");
 
     if (user) {
-        currentUserInfo.email = user.email;
-        // Firebase Auth의 displayName(이름)을 가져옴, 없으면 이메일 아이디 사용
-        currentUserInfo.name = user.displayName || user.email.split('@')[0];
-        
-        userStatus.innerText = `${currentUserInfo.name}님`;
+        status.innerText = `${user.displayName || user.email.split('@')[0]}님`;
         loginBtn.classList.add("hidden");
         logoutBtn.classList.remove("hidden");
-        uploadSection.classList.remove("hidden");
+        loadResources(); // 로그인 시 데이터 로드
     } else {
-        userStatus.innerText = "비로그인 상태";
-        loginBtn.classList.remove("hidden");
-        logoutBtn.classList.add("hidden");
-        uploadSection.classList.add("hidden");
+        // 비로그인 시 처리
+        alert("자료실은 회원만 이용 가능합니다. 로그인을 해주세요!");
+        location.href = "login.html"; // 로그인 페이지로 리다이렉트
     }
-    loadResources();
 });
 
-document.getElementById("btnSave").onclick = async () => {
-    const title = document.getElementById("resTitle").value.trim();
-    const url = document.getElementById("resUrl").value.trim();
-    if(!title || !url) return alert("항목을 모두 입력하세요.");
-
-    try {
-        await db.ref('resources').push({
-            title: title,
-            url: url,
-            ownerName: currentUserInfo.name, // 계정 이름 저장
-            ownerEmail: currentUserInfo.email,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-        alert("등록 성공!");
-        document.getElementById("resTitle").value = "";
-        document.getElementById("resUrl").value = "";
-    } catch(e) { alert("오류 발생"); }
-};
-
+// 자료 목록 로드
 function loadResources() {
-    const tableBody = document.getElementById("resTableBody");
-    db.ref('resources').orderByChild('timestamp').on('value', snapshot => {
+    db.ref("resources").on("value", snapshot => {
+        const tableBody = document.getElementById("resTableBody");
         tableBody.innerHTML = "";
         const data = snapshot.val();
-        if(!data) {
+        
+        if (!data) {
             tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>등록된 자료가 없습니다.</td></tr>";
             return;
         }
 
-        const items = Object.keys(data).map(key => ({ key, ...data[key] })).reverse();
-        items.forEach(item => {
-            const row = document.createElement("tr");
-            let deleteBtn = "";
+        Object.keys(data).reverse().forEach(key => {
+            const res = data[key];
+            const isAdmin = auth.currentUser?.email === ADMIN_EMAIL;
+            const isOwner = auth.currentUser?.email === res.ownerEmail;
             
-            if(auth.currentUser && (auth.currentUser.email === ADMIN_EMAIL || auth.currentUser.email === item.ownerEmail)) {
-                deleteBtn = `<button class="delete-btn" onclick="deleteRes('${item.key}')">삭제</button>`;
-            }
-
-            // 표시할 이름 결정 (이름이 없으면 아이디나 '익명' 표시)
-            const displayName = item.ownerName || (item.ownerEmail ? item.ownerEmail.split('@')[0] : "익명");
-
+            const row = document.createElement("tr");
             row.innerHTML = `
-                <td style="font-weight: bold;">${item.title}</td>
-                <td style="font-size:12px; color:#7fc7ff;">${displayName}</td>
+                <td>${res.title}</td>
+                <td style="color:#7fc7ff; font-size:12px;">${res.ownerName || "익명"}</td>
                 <td>
-                    <div style="display: flex;">
-                        <a href="${item.url}" target="_blank" class="download-link">보기</a>
-                        ${deleteBtn}
-                    </div>
+                    <a href="${res.url}" target="_blank" class="download-link">다운로드/보기</a>
+                    ${(isAdmin || isOwner) ? `<button class="delete-btn" onclick="deleteRes('${key}')">삭제</button>` : ""}
                 </td>
             `;
             tableBody.appendChild(row);
@@ -217,17 +169,26 @@ function loadResources() {
     });
 }
 
-window.deleteRes = (key) => { if(confirm("삭제하시겠습니까?")) db.ref('resources/' + key).remove(); };
-document.getElementById("logoutBtn").onclick = () => auth.signOut();
-
 function filterResources() {
-    const searchTerm = document.getElementById("resSearch").value.toLowerCase();
+    const term = document.getElementById("resSearch").value.toLowerCase();
     const rows = document.getElementById("resTableBody").getElementsByTagName("tr");
     for (let row of rows) {
-        const titleColumn = row.getElementsByTagName("td")[0];
-        if (titleColumn) {
-            row.style.display = titleColumn.innerText.toLowerCase().includes(searchTerm) ? "" : "none";
-        }
+        row.style.display = row.innerText.toLowerCase().includes(term) ? "" : "none";
+    }
+}
+
+function deleteRes(key) {
+    if(confirm("이 자료를 삭제하시겠습니까?")) {
+        db.ref("resources/" + key).remove();
+    }
+}
+
+function logout() {
+    if(confirm("로그아웃 하시겠습니까?")) {
+        auth.signOut().then(() => {
+            alert("로그아웃 되었습니다.");
+            location.href = "index.html";
+        });
     }
 }
 </script>

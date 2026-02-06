@@ -3,229 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP SKY 소개</title>
+    <title>동아리 소개 - DEEP SKY</title>
     <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #0b0f2b;
-            color: white;
+        /* 1. 공통 스타일 및 초기화 */
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; font-family: "Segoe UI", AppleSDGothicNeo-Regular, sans-serif; 
+            background: #0b0f2b; color: white; line-height: 1.8; 
         }
 
-        /* 상단 통합 바 (로고 + 로그인 상태) */
+        /* 2. 상단 바 (디자인 통일) */
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background: #070a1d;
-            border-bottom: 1px solid #1b2f80;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+            height: 60px; position: sticky; top: 0; z-index: 1000;
         }
+        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
+        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
+        .logo-area span { font-size: 18px; font-weight: bold; }
 
-        /* 왼쪽 로고 영역 */
-        .logo-area {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        .logo-area img {
-            width: 35px;
-            height: 35px;
-            margin-right: 10px;
-            border-radius: 50%;
-        }
-
-        .logo-area span {
-            font-size: 18px;
-            font-weight: bold;
-            letter-spacing: -0.5px;
-        }
-
-        /* 오른쪽 로그인 상태 영역 */
-        .auth-bar {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-        }
-
+        .auth-bar { font-size: 14px; display: flex; align-items: center; }
         .auth-bar button {
-            padding: 5px 12px;
-            margin-left: 10px;
-            border-radius: 5px;
-            border: none;
-            background: #3a5aff;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
+            padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none;
+            background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
         }
 
-        .auth-bar button:hover {
-            background: #2847d6;
-        }
+        /* 3. 헤더 및 내비게이션 */
+        header { background: linear-gradient(to bottom, #0d1b52, #1b2f80); padding: 50px 20px; text-align: center; }
+        nav { background: #11153a; padding: 0 10px; text-align: center; border-bottom: 1px solid #2d367a; overflow-x: auto; white-space: nowrap; }
+        nav a { display: inline-block; color: white; padding: 15px 20px; text-decoration: none; font-weight: bold; font-size: 15px; transition: 0.3s; }
+        nav a:hover { color: #7fc7ff; background: rgba(255,255,255,0.05); }
 
-        header {
-            background: linear-gradient(to right, #0d1b52, #1b2f80);
-            padding: 40px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #11153a;
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #2d367a;
-        }
-
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: #7fc7ff;
-        }
-
-        section {
-            padding: 40px 20px;
-            max-width: 900px;
-            margin: auto;
-            padding-bottom: 80px; /* 푸터 여유 공간 */
-        }
-
-        .card {
-            background-color: #161b4a;
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid #2d367a;
-            line-height: 1.8;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .card h2 {
-            color: #7fc7ff;
-            margin-top: 30px;
-            border-bottom: 2px solid #3a5aff;
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        .logo-img-large {
-            width: 280px;
+        /* 4. 본문 컨테이너 */
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px 100px; }
+        
+        .intro-card { 
+            background: #161b4a; padding: 40px; border-radius: 20px; 
+            border: 1px solid #2d367a; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             margin-bottom: 30px;
-            filter: drop-shadow(0 0 10px rgba(127, 199, 255, 0.3));
         }
 
-        footer {
-            background-color: #070a1d;
-            text-align: center;
-            padding: 15px;
-            font-size: 12px;
-            color: #888;
-            border-top: 1px solid #1b2f80;
-            position: relative;
-            margin-top: 50px;
+        /* 로고 소개 전용 스타일 */
+        .logo-intro { text-align: center; }
+        .logo-display { 
+            width: 200px; height: 200px; border-radius: 50%; 
+            margin: 0 auto 20px; border: 3px solid #3a5aff;
+            background: white; padding: 5px; box-shadow: 0 0 20px rgba(58, 90, 255, 0.4);
+        }
+        .logo-display img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .meaning-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; text-align: left;
+        }
+        .meaning-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border-left: 4px solid #7fc7ff; }
+        .meaning-item b { color: #7fc7ff; display: block; margin-bottom: 5px; }
+
+        .intro-card h2 { color: #7fc7ff; border-left: 5px solid #3a5aff; padding-left: 15px; margin-bottom: 25px; font-size: 24px; }
+        .feature-list { list-style: none; padding: 0; margin-top: 30px; }
+        .feature-list li { 
+            background: rgba(58, 90, 255, 0.1); padding: 15px; border-radius: 10px; 
+            margin-bottom: 10px; border: 1px solid rgba(58, 90, 255, 0.2); display: flex; align-items: center;
         }
 
-        .hidden { display: none; }
-        b { color: #7fc7ff; }
+        .hidden { display: none !important; }
+        footer { background: #070a1d; text-align: center; padding: 20px; font-size: 12px; color: #888; border-top: 1px solid #1b2f80; width: 100%; }
+
+        @media (max-width: 600px) {
+            .meaning-grid { grid-template-columns: 1fr; }
+            .intro-card { padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="top-bar">
     <a href="index.html" class="logo-area">
-        <img src="logo.png" alt="로고" onerror="this.src='https://via.placeholder.com/35?text=★'"> 
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/35'">
         <span>DEEP SKY</span>
     </a>
     <div class="auth-bar">
         <span id="userStatus">불러오는 중...</span>
         <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
-        <button id="logoutBtn" class="hidden">로그아웃</button>
+        <button id="logoutBtn" class="hidden" onclick="logout()">로그아웃</button>
     </div>
 </div>
 
 <header>
     <h1>동아리 소개</h1>
+    <p style="opacity: 0.8;">밤하늘의 끝을 탐구하는 DEEP SKY를 소개합니다.</p>
 </header>
 
 <nav>
-    <a href="index.html">홈</a>
-    <a href="question.html">질문</a>
+    <a href="introduce.html">동아리 소개</a>
+    <a href="question.html">질문 게시판</a>
     <a href="activity.html">활동 사진</a>
     <a href="resource.html">자료실</a>
 </nav>
 
-<section>
-    <div class="card" style="text-align:center;">
-        <img src="logo.png" alt="동아리 로고" class="logo-img-large" onerror="this.style.display='none'">
-
-        <br>
-        <h2>로고의 의미</h2>
-        <p>
-            우리 동아리의 로고는 <b>천문에 대한 흥미</b>와 <b>항공 우주에 대한 호기심</b>을 상징합니다.<br>
-            원형은 천체와 우주를 의미하며, 중앙의 별은 새로운 지식을 향한 탐구 정신을 표현합니다.<br>
-            파란색 계열은 과학적 사고와 신뢰를 상징하며, 흰색은 순수한 호기심을 나타냅니다.
-        </p>
-
-        <h2>동아리 소개</h2>
-        <p style="text-align: justify; text-justify: inter-character;">
-            본 동아리는 <b>복성고 유일의 천문학 및 항공 우주 공학 중점 동아리</b>로, 별과 우주, 로켓, 인공위성에 대해 배우고 실험하는 탐구 공동체입니다. 
-            24~25기 한국 천문 올림피아드 교육생이 운영을 담당하며, 전문성을 바탕으로 체계적인 활동을 제공합니다.
-        </p>
+<div class="container">
+    <div class="intro-card logo-intro">
+        <h2>EMBLEM & MEANING</h2>
+        <div class="logo-display">
+            <img src="logo.png" onerror="this.src='https://via.placeholder.com/120'">
+        </div>
+        <p><b>DEEP SKY</b>의 로고는 우리가 지향하는 가치를 담고 있습니다.</p>
         
-        <p style="text-align: justify; text-justify: inter-character;">
-            주요 활동으로는 <b>파이썬 프로그래밍, 아두이노 실습, 대형 망원경 관측, 로켓 제작 및 발사 실험</b> 등 이론과 실습을 병행한 프로젝트를 진행합니다. 
-            단순한 지식 습득을 넘어 천문학과 항공 우주 공학에 깊이 있는 탐구 활동을 이어가고자 하는 학생들을 환영합니다.
-        </p>
+        <div class="meaning-grid">
+            <div class="meaning-item">
+                <b>원형 디자인</b>
+                끊임없이 자전하며 순환하는 행성과 우주의 질서를 상징합니다.
+            </div>
+            <div class="meaning-item">
+                <b>딥 블루 컬러</b>
+                깊고 신비로운 심우주(Deep Sky)와 우리의 냉철한 탐구심을 의미합니다.
+            </div>
+            <div class="meaning-item">
+                <b>중심 엠블럼</b>
+                망원경의 렌즈와 로켓의 궤적을 결합하여 항공우주를 향한 열정을 표현합니다.
+            </div>
+            <div class="meaning-item">
+                <b>화이트 포인트</b>
+                어둠 속에서도 빛나는 별처럼, 과학적 진리를 밝히려는 의지를 담았습니다.
+            </div>
+        </div>
     </div>
-</section>
 
-<footer>
-    © DEEP SKY(복성고 과학 동아리) | All rights reserved | Designed by jw-astro09
-</footer>
+    <div class="intro-card">
+        <h2>DEEP SKY는?</h2>
+        <p>복성고등학교 천문&항공우주 동아리 <b>'DEEP SKY'</b>는 미지의 영역인 우주와 항공 과학에 열정을 가진 학생들의 모임입니다.</p>
+        <p>우리는 단순히 책으로만 배우는 과학이 아니라, 직접 눈으로 관측하고 손으로 제작하며 우주에 대한 꿈을 현실로 만들어가고 있습니다.</p>
+
+        <h2 style="margin-top: 50px;">주요 활동 내용</h2>
+        <ul class="feature-list">
+            <li>교내 야간 천체 관측 캠프 및 별자리 학습</li>
+            <li>항공기 및 로켓 모델 제작 및 비행 원리 탐구</li>
+            <li>천문학 관련 외부 전시회 및 전문가 강연 참여</li>
+            <li>동아리원 간의 자율적인 주제 발표 및 학술 세미나</li>
+        </ul>
+    </div>
+</div>
+
+<footer>© DEEP SKY | All rights reserved.</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
-  authDomain: "clubquestion.firebaseapp.com",
-  databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
-  projectId: "clubquestion",
-  storageBucket: "clubquestion.firebasestorage.app",
-  messagingSenderId: "730586449237",
-  appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
+    apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
+    authDomain: "clubquestion.firebaseapp.com",
+    databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "clubquestion",
+    storageBucket: "clubquestion.firebasestorage.app",
+    messagingSenderId: "730586449237",
+    appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
 };
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 auth.onAuthStateChanged(user => {
-    const userStatus = document.getElementById("userStatus");
+    const status = document.getElementById("userStatus");
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
 
     if (user) {
-        userStatus.innerText = `${user.email.split('@')[0]}님`;
+        status.innerText = `${user.displayName || user.email.split('@')[0]}님`;
         loginBtn.classList.add("hidden");
         logoutBtn.classList.remove("hidden");
     } else {
-        userStatus.innerText = "비로그인 상태";
+        status.innerText = "로그인 해주세요";
         loginBtn.classList.remove("hidden");
         logoutBtn.classList.add("hidden");
     }
 });
 
-document.getElementById("logoutBtn").onclick = () => {
-    if(confirm("로그아웃 하시겠습니까?")) auth.signOut();
-};
+function logout() { if(confirm("로그아웃 하시겠습니까?")) auth.signOut(); }
 </script>
 
 </body>

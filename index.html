@@ -1,523 +1,277 @@
-        <!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="ko">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP SKY - 메인</title>
+    <style>
+        /* 1. 공통 스타일 */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0b0f2b; color: white; }
 
-    <meta charset="UTF-8">
+        /* 2. 상단 바 (60px 고정) */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
+            height: 60px; position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
+        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
+        .logo-area span { font-size: 18px; font-weight: bold; }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        .auth-bar { font-size: 14px; display: flex; align-items: center; }
+        .auth-bar button {
+            padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none;
+            background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
+        }
 
-    <title>DEEP SKY - 메인</title>
-
-    <style>
-
-        /* 1. 공통 스타일 */
-
-        * { box-sizing: border-box; }
-
-        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0b0f2b; color: white; }
-
-
-        /* 2. 상단 바 (60px 고정) */
-
-        .top-bar {
-
-            display: flex; justify-content: space-between; align-items: center;
-
-            padding: 0 20px; background: #070a1d; border-bottom: 1px solid #1b2f80;
-
-            height: 60px; position: sticky; top: 0; z-index: 1000;
-
-        }
-
-        .logo-area { display: flex; align-items: center; text-decoration: none; color: white; }
-
-        .logo-area img { width: 35px; height: 35px; margin-right: 10px; border-radius: 50%; }
-
-        .logo-area span { font-size: 18px; font-weight: bold; }
-
-
-        .auth-bar { font-size: 14px; display: flex; align-items: center; }
-
-        .auth-bar button {
-
-            padding: 5px 12px; margin-left: 10px; border-radius: 5px; border: none;
-
-            background: #3a5aff; color: white; cursor: pointer; font-weight: bold;
-
-        }
-
-
-        /* 3. 헤더 및 내비게이션 */
-
-        header { 
-
-    background: linear-gradient(to bottom, #0d1b52, #1b2f80); 
-
-    padding: 50px 20px; 
-
-    text-align: center; 
-
+        /* 3. 헤더 및 내비게이션 */
+        header { 
+    background: linear-gradient(to bottom, #0d1b52, #1b2f80); 
+    padding: 50px 20px; 
+    text-align: center; 
 }
-
 
 /* 로고와 텍스트를 가로로 배치 */
-
 .header-content {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 25px; /* 로고와 글자 사이 간격 */
-
-    max-width: 800px;
-
-    margin: 0 auto;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px; /* 로고와 글자 사이 간격 */
+    max-width: 800px;
+    margin: 0 auto;
 }
-
 
 .header-logo {
-
-    width: 100px;
-
-    height: 100px;
-
-    background: white;
-
-    border-radius: 50%;
-
-    padding: 5px;
-
-    box-shadow: 0 0 20px rgba(58, 90, 255, 0.5);
-
-    flex-shrink: 0;
-
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 0 20px rgba(58, 90, 255, 0.5);
+    flex-shrink: 0;
 }
-
 
 .header-logo img {
-
-    width: 100%;
-
-    height: 100%;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
-
 
 .header-text {
-
-    text-align: left; /* 글자는 왼쪽 정렬하여 로고 옆에 붙임 */
-
+    text-align: left; /* 글자는 왼쪽 정렬하여 로고 옆에 붙임 */
 }
-
 
 .header-text h1 {
-
-    margin: 0;
-
-    font-size: 2.8rem;
-
-    color: white;
-
-    letter-spacing: 2px;
-
+    margin: 0;
+    font-size: 2.8rem;
+    color: white;
+    letter-spacing: 2px;
 }
-
 
 .header-text p {
-
-    margin: 5px 0 0 0;
-
-    font-size: 1.1rem;
-
-    color: #7fc7ff;
-
-    font-weight: bold;
-
+    margin: 5px 0 0 0;
+    font-size: 1.1rem;
+    color: #7fc7ff;
+    font-weight: bold;
 }
+        nav { background: #11153a; padding: 0 10px; text-align: center; border-bottom: 1px solid #2d367a; overflow-x: auto; white-space: nowrap; }
+        nav a { display: inline-block; color: white; padding: 15px 20px; text-decoration: none; font-weight: bold; font-size: 15px; }
 
-        nav { background: #11153a; padding: 0 10px; text-align: center; border-bottom: 1px solid #2d367a; overflow-x: auto; white-space: nowrap; }
+        /* 4. 사진 슬라이드 */
+        .slide-container {
+            position: relative; max-width: 1000px; margin: 20px auto;
+            height: 600px; overflow: hidden; border-radius: 15px; border: 1px solid #1b2f80;
+        }
+        .slide-item { width: 100%; height: 100%; display: none; }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.5); color: white; border: none;
+            padding: 15px; cursor: pointer; font-size: 20px; border-radius: 50%;
+        }
+        .btn-prev { left: 10px; }
+        .btn-next { right: 10px; }
 
-        nav a { display: inline-block; color: white; padding: 15px 20px; text-decoration: none; font-weight: bold; font-size: 15px; }
+        /* 5. 본문 컨텐츠 및 카드 스타일 */
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px 100px; }
+        .card { background: #161b4a; padding: 25px; border-radius: 15px; border: 1px solid #2d367a; margin-bottom: 25px; }
+        
+        /* 로고 소개 섹션 전용 스타일 */
+        .logo-main-card { background: linear-gradient(135deg, #161b4a 0%, #0d1b52 100%); }
+        .logo-flex { display: flex; align-items: center; gap: 30px; }
+        .main-logo-img { 
+            flex-shrink: 0; width: 200px; height: 200px; background: white; 
+            border-radius: 50%; padding: 8px; box-shadow: 0 0 25px rgba(58, 90, 255, 0.4); 
+        }
+        .main-logo-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .logo-tags { margin-top: 15px; }
+        .logo-tags span {
+            display: inline-block; background: rgba(127, 199, 255, 0.1); color: #7fc7ff;
+            padding: 3px 10px; border-radius: 15px; font-size: 13px; margin-right: 5px; border: 1px solid rgba(127, 199, 255, 0.3);
+        }
 
+        /* 관리자 상자 */
+        #adminBox { border: 1px solid #ff4d4d; background: rgba(255, 77, 77, 0.05); }
+        textarea { width: 100%; height: 80px; background: #0b0f2b; color: white; border: 1px solid #1b2f80; border-radius: 8px; padding: 10px; margin-top: 10px; }
+        
+        .hidden { display: none !important; }
+        footer { background: #070a1d; text-align: center; padding: 20px; font-size: 12px; color: #888; border-top: 1px solid #1b2f80; position: fixed; bottom: 0; width: 100%; }
 
-        /* 4. 사진 슬라이드 */
-
-        .slide-container {
-
-            position: relative; max-width: 1000px; margin: 20px auto;
-
-            height: 600px; overflow: hidden; border-radius: 15px; border: 1px solid #1b2f80;
-
-        }
-
-        .slide-item { width: 100%; height: 100%; display: none; }
-
-        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        .slide-btn {
-
-            position: absolute; top: 50%; transform: translateY(-50%);
-
-            background: rgba(0,0,0,0.5); color: white; border: none;
-
-            padding: 15px; cursor: pointer; font-size: 20px; border-radius: 50%;
-
-        }
-
-        .btn-prev { left: 10px; }
-
-        .btn-next { right: 10px; }
-
-
-        /* 5. 본문 컨텐츠 및 카드 스타일 */
-
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px 100px; }
-
-        .card { background: #161b4a; padding: 25px; border-radius: 15px; border: 1px solid #2d367a; margin-bottom: 25px; }
-
-        
-
-        /* 로고 소개 섹션 전용 스타일 */
-
-        .logo-main-card { background: linear-gradient(135deg, #161b4a 0%, #0d1b52 100%); }
-
-        .logo-flex { display: flex; align-items: center; gap: 30px; }
-
-        .main-logo-img { 
-
-            flex-shrink: 0; width: 200px; height: 200px; background: white; 
-
-            border-radius: 50%; padding: 8px; box-shadow: 0 0 25px rgba(58, 90, 255, 0.4); 
-
-        }
-
-        .main-logo-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        .logo-tags { margin-top: 15px; }
-
-        .logo-tags span {
-
-            display: inline-block; background: rgba(127, 199, 255, 0.1); color: #7fc7ff;
-
-            padding: 3px 10px; border-radius: 15px; font-size: 13px; margin-right: 5px; border: 1px solid rgba(127, 199, 255, 0.3);
-
-        }
-
-
-        /* 관리자 상자 */
-
-        #adminBox { border: 1px solid #ff4d4d; background: rgba(255, 77, 77, 0.05); }
-
-        textarea { width: 100%; height: 80px; background: #0b0f2b; color: white; border: 1px solid #1b2f80; border-radius: 8px; padding: 10px; margin-top: 10px; }
-
-        
-
-        .hidden { display: none !important; }
-
-        footer { background: #070a1d; text-align: center; padding: 20px; font-size: 12px; color: #888; border-top: 1px solid #1b2f80; position: fixed; bottom: 0; width: 100%; }
-
-
-        @media (max-width: 600px) {
-
-            .slide-container { height: 250px; }
-
-            .logo-flex { flex-direction: column; text-align: center; }
-
-            .main-logo-img { width: 120px; height: 120px; }
-
-        }
-
-    </style>
-
+        @media (max-width: 600px) {
+            .slide-container { height: 250px; }
+            .logo-flex { flex-direction: column; text-align: center; }
+            .main-logo-img { width: 120px; height: 120px; }
+        }
+    </style>
 </head>
-
 <body>
 
-
 <div class="top-bar">
-
-    <a href="index.html" class="logo-area">
-
-        <img src="logo.png" onerror="this.src='https://via.placeholder.com/35'">
-
-        <span>DEEP SKY</span>
-
-    </a>
-
-    <div class="auth-bar">
-
-        <span id="userStatus">불러오는 중...</span>
-
-        <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
-
-        <button id="logoutBtn" class="hidden" onclick="logout()">로그아웃</button>
-
-    </div>
-
+    <a href="index.html" class="logo-area">
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/35'">
+        <span>DEEP SKY</span>
+    </a>
+    <div class="auth-bar">
+        <span id="userStatus">불러오는 중...</span>
+        <button id="loginBtn" onclick="location.href='login.html'">로그인</button>
+        <button id="logoutBtn" class="hidden" onclick="logout()">로그아웃</button>
+    </div>
 </div>
 
-
 <header>
-
-    <div class="header-content">
-
-        <div class="header-logo">
-
-            <img src="logo.png" onerror="this.src='https://via.placeholder.com/100'">
-
-        </div>
-
-        <div class="header-text">
-
-            <h1>DEEP SKY</h1>
-
-            <p>복성고등학교 천문 & 항공우주 동아리</p>
-
-        </div>
-
-    </div>
-
+    <div class="header-content">
+        <div class="header-logo">
+            <img src="logo.png" onerror="this.src='https://via.placeholder.com/100'">
+        </div>
+        <div class="header-text">
+            <h1>DEEP SKY</h1>
+            <p>복성고등학교 천문 & 항공우주 동아리</p>
+        </div>
+    </div>
 </header>
 
-
 <nav>
-
-    <a href="introduce.html">동아리 소개</a>
-
-    <a href="question.html">질문 게시판</a>
-
-    <a href="activity.html">활동 사진</a>
-
-    <a href="resource.html">자료실</a>
-
-    <a href="weather.html">기상 정보</a>
-
+    <a href="introduce.html">동아리 소개</a>
+    <a href="question.html">질문 게시판</a>
+    <a href="activity.html">활동 사진</a>
+    <a href="resource.html">자료실</a>
+    <a href="weather.html">기상 정보</a>
 </nav>
 
 
-
 <div class="container">
+  <div class="card">
+        <h3 style="color: #7fc7ff; margin-top: 0;">이번 주 프로그램</h3>
+        <p id="weekProgramText" style="font-size: 18px;">공지사항을 불러오는 중입니다...</p>
+    </div>
 
-  <div class="card">
-
-        <h3 style="color: #7fc7ff; margin-top: 0;">이번 주 프로그램</h3>
-
-        <p id="weekProgramText" style="font-size: 18px;">공지사항을 불러오는 중입니다...</p>
-
-    </div>
-
-
-    <div id="adminBox" class="card hidden">
-
-        <h3 style="color: #1f458c; margin-top: 0;">관리자 메뉴</h3>
-
-        <textarea id="weekProgramInput" placeholder="공지할 내용을 입력하세요"></textarea>
-
-        <button onclick="saveProgram()" style="margin-top:10px; padding:10px 20px; background:#ff4d4d; color:white; border:none; border-radius:5px; cursor:pointer;">수정하기</button>
-
-    </div>
-
+    <div id="adminBox" class="card hidden">
+        <h3 style="color: #1f458c; margin-top: 0;">관리자 메뉴</h3>
+        <textarea id="weekProgramInput" placeholder="공지할 내용을 입력하세요"></textarea>
+        <button onclick="saveProgram()" style="margin-top:10px; padding:10px 20px; background:#ff4d4d; color:white; border:none; border-radius:5px; cursor:pointer;">수정하기</button>
+    </div>
 </div>
-
 
 <div class="slide-container">
-
-    <div align=center><h3>동아리 관측 기록</h3></div>
-
-    <div class="slide-item"><img src="p1.JPG"></div>
-
-    <div class="slide-item"><img src="p2.JPG"></div>
-
-    <div class="slide-item"><img src="p3.jpg"></div>
-
-    <div class="slide-item"><img src="p4.jpg"></div>
-
-    <div class="slide-item"><img src="p5.jpg"></div>
-
-    <div class="slide-item"><img src="p6.jpg"></div>
-
-    <div class="slide-item"><img src="p7.jpg"></div>
-
-    <div class="slide-item"><img src="p8.jpg"></div>
-
-    <div class="slide-item"><img src="p9.jpg"></div>
-
-    <div class="slide-item"><img src="p10.jpg"></div>
-
-    <div class="slide-item"><img src="p11.jpg"></div>
-
-    <button class="slide-btn btn-prev" onclick="changeSlide(-1)">❮</button>
-
-    <button class="slide-btn btn-next" onclick="changeSlide(1)">❯</button>
-
+    <div align=center><h3>동아리 관측 기록</h3></div>
+    <div class="slide-item"><img src="p1.JPG"></div>
+    <div class="slide-item"><img src="p2.JPG"></div>
+    <div class="slide-item"><img src="p3.jpg"></div>
+    <div class="slide-item"><img src="p4.jpg"></div>
+    <div class="slide-item"><img src="p5.jpg"></div>
+    <div class="slide-item"><img src="p6.jpg"></div>
+    <div class="slide-item"><img src="p7.jpg"></div>
+    <div class="slide-item"><img src="p8.jpg"></div>
+    <div class="slide-item"><img src="p9.jpg"></div>
+    <div class="slide-item"><img src="p10.jpg"></div>
+    <div class="slide-item"><img src="p11.jpg"></div>
+    <button class="slide-btn btn-prev" onclick="changeSlide(-1)">❮</button>
+    <button class="slide-btn btn-next" onclick="changeSlide(1)">❯</button>
 </div>
-
 <br>
-
 <br>
-
 <br>
-
 <footer>© DEEP SKY | Bokseong Astronomy and Aerospace Club | All rights reserved.</footer>
 
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-
 <script>
-
 const firebaseConfig = {
-
-    apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
-
-    authDomain: "clubquestion.firebaseapp.com",
-
-    databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
-
-    projectId: "clubquestion",
-
-    storageBucket: "clubquestion.firebasestorage.app",
-
-    messagingSenderId: "730586449237",
-
-    appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
-
+    apiKey: "AIzaSyBX9JG1Ngnx_Pt02ROG2Hp69rnNbK0Pjp8",
+    authDomain: "clubquestion.firebaseapp.com",
+    databaseURL: "https://clubquestion-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "clubquestion",
+    storageBucket: "clubquestion.firebasestorage.app",
+    messagingSenderId: "730586449237",
+    appId: "1:730586449237:web:81b733cf9fc3a5b67fdbdc"
 };
 
-
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
-
 const db = firebase.database();
-
 const ADMIN_EMAIL = "2jw5464@gmail.com";
 
-
 // 1. 슬라이드 기능
-
 let slideIndex = 0;
-
 const slides = document.getElementsByClassName("slide-item");
 
-
 function showSlides() {
-
-    for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
-
-    slideIndex++;
-
-    if (slideIndex > slides.length) slideIndex = 1;
-
-    slides[slideIndex - 1].style.display = "block";
-
-    setTimeout(showSlides, 5000);
-
+    for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+    slideIndex++;
+    if (slideIndex > slides.length) slideIndex = 1;
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 5000);
 }
-
 
 function changeSlide(n) {
-
-    slideIndex += n;
-
-    if (slideIndex > slides.length) slideIndex = 1;
-
-    if (slideIndex < 1) slideIndex = slides.length;
-
-    for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
-
-    slides[slideIndex - 1].style.display = "block";
-
+    slideIndex += n;
+    if (slideIndex > slides.length) slideIndex = 1;
+    if (slideIndex < 1) slideIndex = slides.length;
+    for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+    slides[slideIndex - 1].style.display = "block";
 }
-
 showSlides();
 
-
 // 2. 로그인 상태 감지
-
 auth.onAuthStateChanged(user => {
+    const status = document.getElementById("userStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const adminBox = document.getElementById("adminBox");
 
-    const status = document.getElementById("userStatus");
-
-    const loginBtn = document.getElementById("loginBtn");
-
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const adminBox = document.getElementById("adminBox");
-
-
-    if (user) {
-
-        status.innerText = `${user.displayName || user.email.split('@')[0]}님`;
-
-        loginBtn.classList.add("hidden");
-
-        logoutBtn.classList.remove("hidden");
-
-        if (user.email === ADMIN_EMAIL) adminBox.classList.remove("hidden");
-
-    } else {
-
-        status.innerText = "로그인 해주세요";
-
-        loginBtn.classList.remove("hidden");
-
-        logoutBtn.classList.add("hidden");
-
-        adminBox.classList.add("hidden");
-
-    }
-
+    if (user) {
+        status.innerText = `${user.displayName || user.email.split('@')[0]}님`;
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        if (user.email === ADMIN_EMAIL) adminBox.classList.remove("hidden");
+    } else {
+        status.innerText = "로그인 해주세요";
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        adminBox.classList.add("hidden");
+    }
 });
-
 
 // 3. 공지사항 불러오기 및 저장
-
 db.ref("weekProgram").on("value", s => {
-
-    const data = s.val();
-
-    document.getElementById("weekProgramText").innerText = data ? data.text : "공지가 없습니다.";
-
+    const data = s.val();
+    document.getElementById("weekProgramText").innerText = data ? data.text : "공지가 없습니다.";
 });
 
-
 function saveProgram() {
-
-    const txt = document.getElementById("weekProgramInput").value;
-
-    if(!txt) return alert("내용을 입력하세요.");
-
-    db.ref("weekProgram").set({ text: txt }).then(() => {
-
-        alert("수정 완료");
-
-        document.getElementById("weekProgramInput").value = "";
-
-    });
-
+    const txt = document.getElementById("weekProgramInput").value;
+    if(!txt) return alert("내용을 입력하세요.");
+    db.ref("weekProgram").set({ text: txt }).then(() => {
+        alert("수정 완료");
+        document.getElementById("weekProgramInput").value = "";
+    });
 }
 
-
 function logout() { if(confirm("로그아웃 하시겠습니까?")) auth.signOut(); }
-
 </script>
-
 </body>
-
 </html>
-

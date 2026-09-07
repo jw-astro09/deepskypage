@@ -360,10 +360,6 @@ function addFeatureNavigationLinks() {
     });
 }
 
-function removeMergedAuthorityLinks() {
-    document.querySelectorAll('.nav-menu a[href="adjust.html"]').forEach(link => link.remove());
-}
-
 function createSearchPopover() {
     const userZone = document.querySelector(".auth-user-zone");
     if (!userZone || document.getElementById("search-popover")) return;
@@ -1074,7 +1070,6 @@ function initializeCommonUi() {
     void applySiteBranding();
     startApiStatusMonitor();
     addFeatureNavigationLinks();
-    removeMergedAuthorityLinks();
     createSearchPopover();
     createNotificationPopover();
     createAiLauncher();

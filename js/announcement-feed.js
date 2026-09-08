@@ -14,8 +14,8 @@ export async function loadAnnouncementFeed({
     if (activeOnly) params.set("active", "1");
     try {
         const response = user
-            ? await apiRequest(`/api/jhimap/announcements?${params}`, {}, user)
-            : await apiFetch(`/api/jhimap/announcements?${params}`, {
+            ? await apiRequest(`/api/deepsky/announcements?${params}`, {}, user)
+            : await apiFetch(`/api/deepsky/announcements?${params}`, {
                 headers: { "ngrok-skip-browser-warning": "69420" }
             });
         if (!response.ok) {

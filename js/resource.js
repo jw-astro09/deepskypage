@@ -42,7 +42,7 @@ let currentUser = null;
     });
     async function loadPosts() {
         try {
-            const res = await apiFetch(`/api/jhimap/board/${COLLECTION}`, { headers: await authHeaders(currentUser) });
+            const res = await apiFetch(`/api/deepsky/board/${COLLECTION}`, { headers: await authHeaders(currentUser) });
             if (!res.ok) {
                 document.getElementById('resource-list').innerHTML = '<div style="padding:100px; text-align:center; color:#ff4d4d;">서버 연결에 실패했습니다.</div>';
                 return;
@@ -136,7 +136,7 @@ let currentUser = null;
     async function deletePost(postId) {
         if (!confirm("이 자료를 삭제하시겠습니까?")) return;
         try {
-            const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodeURIComponent(String(postId))}`, {
+            const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodeURIComponent(String(postId))}`, {
                 method: 'DELETE',
                 headers: await authHeaders(currentUser)
             });

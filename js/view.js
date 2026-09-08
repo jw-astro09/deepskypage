@@ -53,11 +53,11 @@ let currentUser = null;
     }
 
     function isFileAttachment(link, href) {
-        return link?.type === 'file' || href.includes('/api/jhimap/uploads/');
+        return link?.type === 'file' || href.includes('/api/deepsky/uploads/');
     }
 
     async function loadPost() {
-        const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodedPostId}`, { headers: await getHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodedPostId}`, { headers: await getHeaders() });
         if (!res.ok) { alert('자료를 찾을 수 없습니다.'); location.replace('resource.html'); return; }
         postData = await res.json();
         document.getElementById('viewTitle').innerText = postData.title || '제목 없음';
@@ -117,7 +117,7 @@ let currentUser = null;
     }
 
     async function loadComments() {
-        const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodedPostId}/comments`, { headers: await getHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodedPostId}/comments`, { headers: await getHeaders() });
         if (!res.ok) return;
         const comments = await res.json();
         const list = document.getElementById('commentList');
@@ -173,7 +173,7 @@ let currentUser = null;
         btn.disabled = true;
         btn.innerText = 'SENDING...';
         try {
-            const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodedPostId}/comments`, { method:'POST', headers: await getHeaders(true), body: JSON.stringify({ content, authorName: currentUserName }) });
+            const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodedPostId}/comments`, { method:'POST', headers: await getHeaders(true), body: JSON.stringify({ content, authorName: currentUserName }) });
             if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || '댓글 작성 실패'); }
             input.value = '';
             await loadComments();
@@ -273,14 +273,14 @@ let currentUser = null;
 
     async function deleteComment(commentId) {
         if (!confirm('댓글을 삭제하시겠습니까?')) return;
-        const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodedPostId}/comments/${encodeURIComponent(String(commentId))}`, { method:'DELETE', headers: await getHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodedPostId}/comments/${encodeURIComponent(String(commentId))}`, { method:'DELETE', headers: await getHeaders() });
         if (res.ok) await loadComments(); else alert('댓글 삭제에 실패했습니다.');
     }
 
     document.getElementById('btnEditPost').onclick = () => { location.href = `write.html?id=${encodedPostId}`; };
     document.getElementById('btnDeletePost').onclick = async () => {
         if (!confirm('자료를 삭제하시겠습니까? 관련 댓글도 함께 삭제됩니다.')) return;
-        const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodedPostId}`, { method:'DELETE', headers: await getHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodedPostId}`, { method:'DELETE', headers: await getHeaders() });
         if (res.ok) location.href = 'resource.html'; else alert('삭제 권한이 없거나 오류가 발생했습니다.');
     };
 

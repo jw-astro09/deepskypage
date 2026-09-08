@@ -44,7 +44,7 @@ onAuthStateChanged(auth, async user => {
     try {
         [currentProfile, permissions] = await Promise.all([
             getCurrentProfile(user),
-            apiRequest("/api/jhimap/me/permissions", {}, user).then(response => response.json())
+            apiRequest("/api/deepsky/me/permissions", {}, user).then(response => response.json())
         ]);
         loginLink.hidden = true;
         userName.hidden = false;
@@ -61,7 +61,7 @@ onAuthStateChanged(auth, async user => {
 async function loadPhotos() {
     boardStatus.textContent = "사진을 불러오는 중입니다.";
     boardStatus.classList.remove("error");
-    const response = await apiRequest("/api/jhimap/photos", {}, currentUser);
+    const response = await apiRequest("/api/deepsky/photos", {}, currentUser);
     photos = await response.json();
     await renderFilteredPhotos();
 }
@@ -208,7 +208,7 @@ async function submitPhotoPost(event) {
     formStatus.textContent = "이미지를 서버에 저장하고 있습니다.";
     formStatus.classList.remove("error");
     try {
-        await apiRequest("/api/jhimap/photos", { method: "POST", body: data }, currentUser);
+        await apiRequest("/api/deepsky/photos", { method: "POST", body: data }, currentUser);
         form.reset();
         renderSelection();
         formStatus.textContent = "사진 게시물이 등록되었습니다.";
@@ -225,7 +225,7 @@ async function submitPhotoPost(event) {
 async function deletePhoto(id) {
     if (!confirm("이 사진 게시물과 첨부 이미지를 삭제하시겠습니까?")) return;
     try {
-        await apiRequest(`/api/jhimap/photos/${encodeURIComponent(String(id))}`, { method: "DELETE" }, currentUser);
+        await apiRequest(`/api/deepsky/photos/${encodeURIComponent(String(id))}`, { method: "DELETE" }, currentUser);
         await loadPhotos();
     } catch (error) {
         alert(error.message);

@@ -64,7 +64,7 @@ export async function initializeAnnouncementSection({
     async function deleteAnnouncement(item) {
         if (!confirm(`"${item.title}" 공지를 삭제하시겠습니까?`)) return;
         try {
-            await apiRequest(`/api/jhimap/announcements/${encodeURIComponent(String(item.id))}`, {
+            await apiRequest(`/api/deepsky/announcements/${encodeURIComponent(String(item.id))}`, {
                 method: "DELETE"
             }, user);
             closeForm();
@@ -104,8 +104,8 @@ export async function initializeAnnouncementSection({
         status.textContent = "";
         try {
             await apiRequest(id
-                ? `/api/jhimap/announcements/${encodeURIComponent(id)}`
-                : "/api/jhimap/announcements", {
+                ? `/api/deepsky/announcements/${encodeURIComponent(id)}`
+                : "/api/deepsky/announcements", {
                 method: id ? "PUT" : "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)

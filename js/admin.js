@@ -37,7 +37,7 @@ onAuthStateChanged(auth, async user => {
     try {
         const [profile, permissions] = await Promise.all([
             getCurrentProfile(user),
-            apiRequest("/api/jhimap/me/permissions", {}, user).then(response => response.json())
+            apiRequest("/api/deepsky/me/permissions", {}, user).then(response => response.json())
         ]);
         if (!permissions["admin.access"]) {
             location.replace("block.html");
@@ -79,7 +79,7 @@ async function loadClubLogos() {
     message.textContent = "";
     saveButton.disabled = true;
     try {
-        const response = await apiRequest("/api/jhimap/site-settings/logo", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/site-settings/logo", {}, currentAdminUser);
         renderClubLogos(await response.json());
     } catch (error) {
         grid.innerHTML = `<p class="logo-setting-status permission-error">${escapeHtml(error.message)}</p>`;
@@ -144,7 +144,7 @@ async function saveClubLogo() {
     message.textContent = "";
     message.classList.remove("permission-error");
     try {
-        const response = await apiRequest("/api/jhimap/admin/site-settings/logo", {
+        const response = await apiRequest("/api/deepsky/admin/site-settings/logo", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ logoId: selectedLogoId })
@@ -167,7 +167,7 @@ async function loadRecentActivity() {
     refreshButton.textContent = "불러오는 중";
     list.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;">최근 활동을 불러오는 중...</td></tr>';
     try {
-        const response = await apiRequest("/api/jhimap/admin/activity", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/admin/activity", {}, currentAdminUser);
         const data = await response.json();
         recentActivity = Array.isArray(data.items) ? data.items : [];
         document.getElementById("activity-total").textContent = String(data.count || 0);
@@ -217,7 +217,7 @@ function renderRecentActivity() {
 async function loadUsers() {
     const userList = document.getElementById("user-list");
     try {
-        const response = await apiRequest("/api/jhimap/admin/users", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/admin/users", {}, currentAdminUser);
         const users = await response.json();
         userList.innerHTML = "";
         if (!users.length) {
@@ -245,7 +245,7 @@ async function loadRolePermissions() {
     container.innerHTML = '<p class="permission-status">권한 설정을 불러오는 중입니다.</p>';
     refreshButton.disabled = true;
     try {
-        const response = await apiRequest("/api/jhimap/admin/role-permissions", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/admin/role-permissions", {}, currentAdminUser);
         renderRolePermissions(await response.json());
     } catch (error) {
         container.innerHTML = `<p class="permission-status permission-error">${escapeHtml(error.message)}</p>`;
@@ -363,7 +363,7 @@ async function saveRolePermissions(role, definitions, container, button) {
     button.disabled = true;
     button.textContent = "저장 중...";
     try {
-        await apiRequest("/api/jhimap/admin/role-permissions", {
+        await apiRequest("/api/deepsky/admin/role-permissions", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ role, permissions })
@@ -380,7 +380,7 @@ async function saveRolePermissions(role, definitions, container, button) {
 async function loadSuggestions() {
     const list = document.getElementById("suggestion-list");
     try {
-        const response = await apiRequest("/api/jhimap/suggestions", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/suggestions", {}, currentAdminUser);
         const suggestions = await response.json();
         clearSuggestionAttachmentUrls();
         list.innerHTML = "";
@@ -445,7 +445,7 @@ window.addEventListener("beforeunload", clearSuggestionAttachmentUrls);
 async function loadRequests() {
     const list = document.getElementById("request-list");
     try {
-        const response = await apiRequest("/api/jhimap/authority-requests", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/authority-requests", {}, currentAdminUser);
         const requests = await response.json();
         list.innerHTML = "";
         if (!requests.length) {
@@ -469,7 +469,7 @@ async function updateUserRole(uid) {
     const role = document.getElementById(`role-${uid}`).value;
     if (!confirm(`해당 사용자의 등급을 ${roleMap[role] || role}(으)로 변경하시겠습니까?`)) return;
     try {
-        await apiRequest(`/api/jhimap/admin/users/${encodeURIComponent(uid)}/role`, {
+        await apiRequest(`/api/deepsky/admin/users/${encodeURIComponent(uid)}/role`, {
             method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ role })
         }, currentAdminUser);
         alert("등급이 변경되었습니다.");
@@ -482,7 +482,7 @@ async function updateUserRole(uid) {
 async function handleRequest(uid, action) {
     if (!confirm(`이 요청을 ${action === "approve" ? "승인" : "거절"}하시겠습니까?`)) return;
     try {
-        await apiRequest(`/api/jhimap/authority-requests/${encodeURIComponent(uid)}`, {
+        await apiRequest(`/api/deepsky/authority-requests/${encodeURIComponent(uid)}`, {
             method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action })
         }, currentAdminUser);
         alert(action === "approve" ? "요청이 승인되었습니다." : "요청이 거절되었습니다.");
@@ -495,7 +495,7 @@ async function handleRequest(uid, action) {
 async function deleteSuggestion(id) {
     if (!confirm("이 건의 사항을 해결 완료 처리하고 삭제하시겠습니까?")) return;
     try {
-        await apiRequest(`/api/jhimap/suggestions/${encodeURIComponent(String(id))}`, { method: "DELETE" }, currentAdminUser);
+        await apiRequest(`/api/deepsky/suggestions/${encodeURIComponent(String(id))}`, { method: "DELETE" }, currentAdminUser);
         alert("삭제되었습니다.");
         await loadSuggestions();
     } catch (error) {
@@ -506,7 +506,7 @@ async function deleteSuggestion(id) {
 async function loadReports() {
     const list = document.getElementById("report-list");
     try {
-        const response = await apiRequest("/api/jhimap/admin/reports", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/admin/reports", {}, currentAdminUser);
         const reports = await response.json();
         list.innerHTML = "";
         if (!reports.length) {
@@ -551,7 +551,7 @@ async function loadReports() {
 }
 
 async function updateReport(id, status) {
-    await apiRequest(`/api/jhimap/admin/reports/${id}`, {
+    await apiRequest(`/api/deepsky/admin/reports/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })
@@ -562,7 +562,7 @@ async function updateReport(id, status) {
 async function loadAuditLogs() {
     const list = document.getElementById("audit-list");
     try {
-        const response = await apiRequest("/api/jhimap/admin/audit-logs", {}, currentAdminUser);
+        const response = await apiRequest("/api/deepsky/admin/audit-logs", {}, currentAdminUser);
         const logs = await response.json();
         list.innerHTML = "";
         if (!logs.length) {

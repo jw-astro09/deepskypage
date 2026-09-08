@@ -50,7 +50,7 @@ async function runSearch() {
     results.innerHTML = '<div class="loading-state">검색 중입니다.</div>';
     summary.textContent = "";
     try {
-        const response = await apiRequest(`/api/jhimap/search?${params}`, {}, currentUser);
+        const response = await apiRequest(`/api/deepsky/search?${params}`, {}, currentUser);
         const items = await response.json();
         summary.textContent = `${items.length}개의 결과`;
         results.innerHTML = "";

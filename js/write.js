@@ -42,7 +42,7 @@ const editPostId = new URLSearchParams(window.location.search).get('id');
     async function loadEditData() {
         document.getElementById('formTitle').innerText = '자료 수정하기';
         document.getElementById('submitBtn').innerText = '수정 완료';
-        const res = await apiFetch(`/api/jhimap/board/${COLLECTION}/${encodeURIComponent(editPostId)}`, { headers: await getHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${COLLECTION}/${encodeURIComponent(editPostId)}`, { headers: await getHeaders() });
         if (!res.ok) { alert('자료를 찾을 수 없습니다.'); location.replace('resource.html'); return; }
         const data = await res.json();
         const canEdit = data.uid === currentUser.uid || WRITABLE_ROLES.includes(currentRole);
@@ -68,7 +68,7 @@ const editPostId = new URLSearchParams(window.location.search).get('id');
             const url = normalizeSafeLinkUrl(rawUrl, { allowUpload: true });
             if (!url) return { invalid: true };
             const name = document.querySelectorAll('.postFileName')[index].value.trim() || '첨부 링크';
-            return { url, name, type: url.startsWith('/api/jhimap/uploads/') ? 'file' : 'link' };
+            return { url, name, type: url.startsWith('/api/deepsky/uploads/') ? 'file' : 'link' };
         }).filter(Boolean);
         if (links.some(link => link.invalid)) { alert('첨부 링크는 인증 정보가 없는 http/https 주소만 사용할 수 있습니다.'); return; }
         const submitBtn = document.getElementById('submitBtn');
@@ -77,7 +77,7 @@ const editPostId = new URLSearchParams(window.location.search).get('id');
         try {
             const uploadedFiles = await uploadSelectedFiles();
             links.push(...uploadedFiles);
-            const path = editPostId ? `/api/jhimap/board/${COLLECTION}/${encodeURIComponent(editPostId)}` : `/api/jhimap/board/${COLLECTION}`;
+            const path = editPostId ? `/api/deepsky/board/${COLLECTION}/${encodeURIComponent(editPostId)}` : `/api/deepsky/board/${COLLECTION}`;
             const res = await apiFetch(path, { method: editPostId ? 'PUT' : 'POST', headers: await getHeaders(true), body: JSON.stringify({ title, content, category, links, authorName: currentUserName }) });
             if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || '저장 실패'); }
             draftController?.clear();

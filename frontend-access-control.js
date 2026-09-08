@@ -108,7 +108,7 @@ async function resolveRole(user) {
 
 async function resolvePermissions(user) {
     if (!user) return {};
-    const response = await apiRequest("/api/jhimap/me/permissions", {}, user);
+    const response = await apiRequest("/api/deepsky/me/permissions", {}, user);
     return response.json();
 }
 

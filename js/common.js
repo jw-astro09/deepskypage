@@ -57,7 +57,7 @@ async function probeApiBaseUrl(baseUrl) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
     try {
-        const response = await fetch(`${baseUrl}/api/jhimap/health`, {
+        const response = await fetch(`${baseUrl}/api/deepsky/health`, {
             headers: { "ngrok-skip-browser-warning": "69420" },
             cache: "no-store",
             signal: controller.signal
@@ -165,7 +165,7 @@ const SAFE_LOGO_ASSET_PATTERN = /^(?:logo\.png|assets\/logos\/[a-z0-9-]+\.png)$/
 
 export async function applySiteBranding() {
     try {
-        const response = await apiFetch("/api/jhimap/site-settings/logo", {
+        const response = await apiFetch("/api/deepsky/site-settings/logo", {
             headers: { "ngrok-skip-browser-warning": "69420" }
         });
         if (!response.ok) return null;
@@ -274,7 +274,7 @@ export async function getCurrentProfile(user = auth.currentUser, force = false) 
     if (!user) return { uid: null, email: "", name: "", school: "", role: "guest" };
     if (!force && profileUid === user.uid && profilePromise) return profilePromise;
     profileUid = user.uid;
-    profilePromise = apiRequest("/api/jhimap/me", {}, user)
+    profilePromise = apiRequest("/api/deepsky/me", {}, user)
         .then(response => response.json())
         .catch(error => {
             clearProfileCache();
@@ -284,7 +284,7 @@ export async function getCurrentProfile(user = auth.currentUser, force = false) 
 }
 
 export async function updateCurrentProfile(profile, user = auth.currentUser) {
-    const response = await apiRequest("/api/jhimap/me", {
+    const response = await apiRequest("/api/deepsky/me", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profile)
@@ -472,7 +472,7 @@ function createSearchPopover() {
         renderMessage("검색 중입니다.");
         try {
             const response = await apiRequest(
-                `/api/jhimap/search?q=${encodeURIComponent(query)}`,
+                `/api/deepsky/search?q=${encodeURIComponent(query)}`,
                 {},
                 currentUser
             );
@@ -653,7 +653,7 @@ function createNotificationPopover() {
     async function loadUnreadCount() {
         if (!currentUser) return;
         try {
-            const response = await apiRequest("/api/jhimap/notifications/unread-count", {}, currentUser);
+            const response = await apiRequest("/api/deepsky/notifications/unread-count", {}, currentUser);
             const data = await response.json();
             updateCount(data.count);
         } catch {
@@ -665,7 +665,7 @@ function createNotificationPopover() {
         if (!currentUser) return;
         list.innerHTML = '<p class="notification-popover-empty">알림을 불러오는 중입니다.</p>';
         try {
-            const response = await apiRequest("/api/jhimap/notifications?unread=1&limit=30", {}, currentUser);
+            const response = await apiRequest("/api/deepsky/notifications?unread=1&limit=30", {}, currentUser);
             const notifications = await response.json();
             renderNotifications(notifications);
             updateCount(notifications.length);
@@ -677,7 +677,7 @@ function createNotificationPopover() {
 
     async function markNotificationRead(id) {
         try {
-            await apiRequest(`/api/jhimap/notifications/${encodeURIComponent(String(id))}/read`, {
+            await apiRequest(`/api/deepsky/notifications/${encodeURIComponent(String(id))}/read`, {
                 method: "PUT"
             }, currentUser);
             updateCount(unreadCount - 1);
@@ -703,7 +703,7 @@ function createNotificationPopover() {
         readAllButton.disabled = true;
         readAllButton.textContent = "처리 중";
         try {
-            await apiRequest("/api/jhimap/notifications/read-all", { method: "PUT" }, currentUser);
+            await apiRequest("/api/deepsky/notifications/read-all", { method: "PUT" }, currentUser);
             updateCount(0);
             renderEmpty();
             window.dispatchEvent(new CustomEvent("deepsky:notifications-cleared"));
@@ -900,7 +900,7 @@ function showAnnouncementPopup(announcements) {
 async function createAnnouncementPopup() {
     try {
         const params = new URLSearchParams({ scope: "all", active: "1" });
-        const response = await apiFetch(`/api/jhimap/announcements?${params}`, {
+        const response = await apiFetch(`/api/deepsky/announcements?${params}`, {
             headers: { "ngrok-skip-browser-warning": "69420" }
         });
         if (!response.ok) return;
@@ -1041,7 +1041,7 @@ function createAiLauncher() {
         submit.textContent = "응답 중";
         output.textContent = "답변을 준비하고 있습니다.";
         try {
-            const response = await apiRequest("/api/jhimap/ai/chat", {
+            const response = await apiRequest("/api/deepsky/ai/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

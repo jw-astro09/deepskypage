@@ -113,7 +113,7 @@ let currentUser = null;
     }
 
     async function loadEditData() {
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${editId}`, { headers: await authHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${editId}`, { headers: await authHeaders() });
         if (!res.ok) { location.replace("block.html"); return; }
         editPost = await res.json();
         if (!canEditPost()) { location.replace("block.html"); return; }
@@ -132,7 +132,7 @@ let currentUser = null;
         const linkEntries = [...document.querySelectorAll(".link-row")].map(row => {
             const rawUrl = row.querySelector(".link-url").value.trim();
             const url = normalizeSafeLinkUrl(rawUrl, { allowUpload: true });
-            return { name:row.querySelector(".link-name").value.trim(), url, invalid:Boolean(rawUrl && !url), type:url.startsWith("/api/jhimap/uploads/") ? "file" : "link" };
+            return { name:row.querySelector(".link-name").value.trim(), url, invalid:Boolean(rawUrl && !url), type:url.startsWith("/api/deepsky/uploads/") ? "file" : "link" };
         });
         if (linkEntries.some(link => link.invalid)) {
             alert("첨부 링크는 인증 정보가 없는 http 또는 https 주소만 사용할 수 있습니다.");
@@ -147,7 +147,7 @@ let currentUser = null;
             const uploadedFiles = await uploadSelectedFiles();
             links.push(...uploadedFiles);
             const payload = { title, content, category:document.getElementById("category").value, links, authorName:currentUserName };
-            const path = editId ? `/api/jhimap/board/${school.collection}/${editId}` : `/api/jhimap/board/${school.collection}`;
+            const path = editId ? `/api/deepsky/board/${school.collection}/${editId}` : `/api/deepsky/board/${school.collection}`;
             const res = await apiFetch(path, { method: editId ? "PUT" : "POST", headers:{ ...(await authHeaders()), "Content-Type":"application/json" }, body:JSON.stringify(payload) });
             if (!res.ok) { throw new Error("저장 권한이 없거나 오류가 발생했습니다."); }
             draftController?.clear();

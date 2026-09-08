@@ -108,9 +108,9 @@ for (const unsafe of [
     "//evil.example/file",
     "https://user:pass@example.com/file",
     "https://example.com\\@evil.example/file",
-    "https://example.com/api/jhimap/uploads/resources/file.pdf",
-    "/api/jhimap/uploads/resources/../secret.txt",
-    "/api/jhimap/uploads/resources/%2e%2e/secret.txt"
+    "https://example.com/api/deepsky/uploads/resources/file.pdf",
+    "/api/deepsky/uploads/resources/../secret.txt",
+    "/api/deepsky/uploads/resources/%2e%2e/secret.txt"
 ]) {
     if (normalizeLinkUrl(unsafe, { allowUpload: true, apiBaseUrl })) {
         fail(path.join(root, "js", "link-policy.js"), `위험한 URL을 허용합니다: ${unsafe}`);
@@ -119,7 +119,7 @@ for (const unsafe of [
 if (normalizeLinkUrl("https://example.com/file?q=1") !== "https://example.com/file?q=1") {
     fail(path.join(root, "js", "link-policy.js"), "정상 HTTPS 링크를 거부합니다.");
 }
-if (normalizeLinkUrl("/api/jhimap/uploads/resources/file.pdf", { allowUpload: true, apiBaseUrl }) !== "/api/jhimap/uploads/resources/file.pdf") {
+if (normalizeLinkUrl("/api/deepsky/uploads/resources/file.pdf", { allowUpload: true, apiBaseUrl }) !== "/api/deepsky/uploads/resources/file.pdf") {
     fail(path.join(root, "js", "link-policy.js"), "정상 서버 첨부 경로를 거부합니다.");
 }
 for (const name of ["view.js", "school-view.js", "write.js", "school-write.js"]) {

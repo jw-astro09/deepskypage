@@ -10,7 +10,7 @@ export async function setupPostTools({ user, collection, postId, bookmarkButton,
     reportButton?.classList.remove("hidden");
     if (bookmarkButton) {
         const response = await apiRequest(
-            `/api/jhimap/bookmarks/${collection}/${encodeURIComponent(String(postId))}`,
+            `/api/deepsky/bookmarks/${collection}/${encodeURIComponent(String(postId))}`,
             {},
             user
         );
@@ -19,7 +19,7 @@ export async function setupPostTools({ user, collection, postId, bookmarkButton,
         bookmarkButton.onclick = async () => {
             const bookmarked = bookmarkButton.dataset.bookmarked === "true";
             await apiRequest(
-                `/api/jhimap/bookmarks/${collection}/${encodeURIComponent(String(postId))}`,
+                `/api/deepsky/bookmarks/${collection}/${encodeURIComponent(String(postId))}`,
                 { method: bookmarked ? "DELETE" : "POST" },
                 user
             );
@@ -100,7 +100,7 @@ function getReportDialog() {
         const status = dialog.querySelector("[data-report-status]");
         status.textContent = "접수 중입니다.";
         try {
-            await apiRequest("/api/jhimap/reports", {
+            await apiRequest("/api/deepsky/reports", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

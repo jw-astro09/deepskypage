@@ -71,7 +71,7 @@ let currentUser = null;
 
     async function loadPosts() {
         try {
-            const res = await apiFetch(`/api/jhimap/board/${school.collection}`, { headers: await authHeaders() });
+            const res = await apiFetch(`/api/deepsky/board/${school.collection}`, { headers: await authHeaders() });
             if (!res.ok) { location.replace("block.html"); return; }
             allPosts = await res.json();
             renderPosts();
@@ -144,7 +144,7 @@ let currentUser = null;
 
     async function deletePost(postId) {
         if (!confirm("이 자료를 삭제하시겠습니까?")) return;
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodeURIComponent(String(postId))}`, { method:"DELETE", headers: await authHeaders() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodeURIComponent(String(postId))}`, { method:"DELETE", headers: await authHeaders() });
         if (res.ok) await loadPosts();
         else alert("삭제 권한이 없거나 오류가 발생했습니다.");
     }

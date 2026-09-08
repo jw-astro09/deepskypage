@@ -1,4 +1,4 @@
-const UPLOAD_PATH_PREFIX = "/api/jhimap/uploads/";
+const UPLOAD_PATH_PREFIX = "/api/deepsky/uploads/";
 const LEGACY_DOWNLOAD_PATHS = new Set(["/api/download", "/api/download-link"]);
 
 export function normalizeLinkUrl(value, { allowUpload = false, resolveUpload = false, apiBaseUrl = "" } = {}) {

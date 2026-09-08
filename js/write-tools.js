@@ -90,7 +90,7 @@ async function uploadOne(file, user, collection, onProgress, onXhr) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         onXhr(xhr);
-        xhr.open("POST", `${API_BASE_URL}/api/jhimap/uploads/${collection}`);
+        xhr.open("POST", `${API_BASE_URL}/api/deepsky/uploads/${collection}`);
         Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
         xhr.upload.addEventListener("progress", onProgress);
         xhr.addEventListener("load", () => {

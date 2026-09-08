@@ -63,7 +63,7 @@ elements.form.addEventListener("submit", async event => {
     submit.textContent = "저장 중";
     elements.status.textContent = "";
     try {
-        await apiRequest(id ? `/api/jhimap/updates/${encodeURIComponent(id)}` : "/api/jhimap/updates", {
+        await apiRequest(id ? `/api/deepsky/updates/${encodeURIComponent(id)}` : "/api/deepsky/updates", {
             method: id ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -81,7 +81,7 @@ elements.form.addEventListener("submit", async event => {
 async function deleteUpdate(item) {
     if (!confirm(`"${item.title}" 업데이트 기록을 삭제하시겠습니까?`)) return;
     try {
-        await apiRequest(`/api/jhimap/updates/${encodeURIComponent(String(item.id))}`, {
+        await apiRequest(`/api/deepsky/updates/${encodeURIComponent(String(item.id))}`, {
             method: "DELETE"
         }, currentUser);
         closeForm();
@@ -95,8 +95,8 @@ async function loadUpdates() {
     elements.list.replaceChildren(createState("업데이트 기록을 불러오는 중입니다.", "loading-state"));
     try {
         const response = currentUser
-            ? await apiRequest("/api/jhimap/updates", {}, currentUser)
-            : await apiFetch("/api/jhimap/updates", { headers: { "ngrok-skip-browser-warning": "69420" } });
+            ? await apiRequest("/api/deepsky/updates", {}, currentUser)
+            : await apiFetch("/api/deepsky/updates", { headers: { "ngrok-skip-browser-warning": "69420" } });
         if (!response.ok) {
             const data = await response.json().catch(() => ({}));
             throw new Error(data.error || "업데이트 기록을 불러올 수 없습니다.");

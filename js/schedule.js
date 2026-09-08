@@ -47,7 +47,7 @@ form.addEventListener("submit", async event => {
     };
     formStatus.textContent = "저장 중입니다.";
     try {
-        await apiRequest(id ? `/api/jhimap/events/${id}` : "/api/jhimap/events", {
+        await apiRequest(id ? `/api/deepsky/events/${id}` : "/api/deepsky/events", {
             method: id ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -62,7 +62,7 @@ form.addEventListener("submit", async event => {
 async function loadEvents() {
     list.innerHTML = '<div class="loading-state">일정을 불러오는 중입니다.</div>';
     try {
-        const response = await apiRequest(`/api/jhimap/events?period=${currentPeriod}`, {}, currentUser);
+        const response = await apiRequest(`/api/deepsky/events?period=${currentPeriod}`, {}, currentUser);
         eventCache = await response.json();
         list.innerHTML = "";
         if (!eventCache.length) {
@@ -134,7 +134,7 @@ function renderEvent(item) {
 }
 
 async function toggleParticipation(item) {
-    await apiRequest(`/api/jhimap/events/${item.id}/participation`, {
+    await apiRequest(`/api/deepsky/events/${item.id}/participation`, {
         method: item.joined ? "DELETE" : "POST"
     }, currentUser);
     await loadEvents();
@@ -142,7 +142,7 @@ async function toggleParticipation(item) {
 
 async function deleteEvent(item) {
     if (!confirm(`"${item.title}" 일정을 삭제하시겠습니까?`)) return;
-    await apiRequest(`/api/jhimap/events/${item.id}`, { method: "DELETE" }, currentUser);
+    await apiRequest(`/api/deepsky/events/${item.id}`, { method: "DELETE" }, currentUser);
     resetForm();
     await loadEvents();
 }

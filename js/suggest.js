@@ -90,7 +90,7 @@ form.addEventListener("submit", async event => {
 });
 
 async function submitAuthorityRequest() {
-    const response = await apiRequest("/api/jhimap/authority-requests", {
+    const response = await apiRequest("/api/deepsky/authority-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -113,7 +113,7 @@ async function submitSuggestion() {
     formData.append("subject", subjectInput.value.trim());
     formData.append("content", contentInput.value.trim());
     images.forEach(image => formData.append("images", image, image.name));
-    const response = await apiRequest("/api/jhimap/suggestions", {
+    const response = await apiRequest("/api/deepsky/suggestions", {
         method: "POST",
         body: formData
     }, currentUser);

@@ -2,7 +2,7 @@ import { apiRequest, auth, authPersistenceReady } from "./common.js?v=20260826-s
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 async function continueAfterAuthentication(user) {
-    const response = await apiRequest("/api/jhimap/account-status", {}, user);
+    const response = await apiRequest("/api/deepsky/account-status", {}, user);
     const account = await response.json();
     location.href = account.exists ? "index.html" : "signup.html";
 }

@@ -23,7 +23,7 @@ onAuthStateChanged(auth,async user=>{
     if (user) {
       profile=await getCurrentProfile(user);
       userName.textContent=profile.name||user.displayName||"User";
-      const response = await apiRequest("/api/jhimap/dashboard", {}, user);
+      const response = await apiRequest("/api/deepsky/dashboard", {}, user);
       renderDashboard(await response.json());
     }
   } catch (error) {

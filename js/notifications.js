@@ -9,7 +9,7 @@ let currentFilter = "all";
 document.getElementById("logout-btn").addEventListener("click", () => logoutTo());
 document.getElementById("read-all-btn").addEventListener("click", async () => {
     if (!currentUser) return;
-    await apiRequest("/api/jhimap/notifications/read-all", { method: "PUT" }, currentUser);
+    await apiRequest("/api/deepsky/notifications/read-all", { method: "PUT" }, currentUser);
     window.dispatchEvent(new CustomEvent("deepsky:notifications-cleared"));
     await loadNotifications();
 });
@@ -41,7 +41,7 @@ async function loadNotifications() {
     list.innerHTML = '<div class="loading-state">알림을 불러오는 중입니다.</div>';
     try {
         const query = currentFilter === "unread" ? "?unread=1" : "";
-        const response = await apiRequest(`/api/jhimap/notifications${query}`, {}, currentUser);
+        const response = await apiRequest(`/api/deepsky/notifications${query}`, {}, currentUser);
         const notifications = await response.json();
         list.innerHTML = "";
         if (!notifications.length) {
@@ -104,7 +104,7 @@ function renderNotification(notification) {
 
 async function markRead(id) {
     try {
-        await apiRequest(`/api/jhimap/notifications/${encodeURIComponent(String(id))}/read`, {
+        await apiRequest(`/api/deepsky/notifications/${encodeURIComponent(String(id))}/read`, {
             method: "PUT"
         }, currentUser);
     } catch {

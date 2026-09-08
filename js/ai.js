@@ -63,7 +63,7 @@ function addFeedbackControls(container, responseId) {
         button.textContent = label;
         button.addEventListener("click", async () => {
             try {
-                await apiRequest("/api/jhimap/ai/feedback", {
+                await apiRequest("/api/deepsky/ai/feedback", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ responseId, rating })
@@ -129,7 +129,7 @@ function resetChat() {
 async function refreshConversations() {
     if (!state.user) return;
     try {
-        const response = await apiRequest("/api/jhimap/ai/conversations");
+        const response = await apiRequest("/api/deepsky/ai/conversations");
         const conversations = await response.json();
         elements.conversationList.replaceChildren();
         if (!conversations.length) {
@@ -170,7 +170,7 @@ async function refreshConversations() {
 
 async function loadConversation(id) {
     try {
-        const response = await apiRequest(`/api/jhimap/ai/conversations/${encodeURIComponent(id)}`);
+        const response = await apiRequest(`/api/deepsky/ai/conversations/${encodeURIComponent(id)}`);
         const data = await response.json();
         state.conversationId = id;
         state.history = [];
@@ -191,7 +191,7 @@ async function loadConversation(id) {
 async function deleteConversation(id) {
     if (!confirm("이 대화를 삭제하시겠습니까?")) return;
     try {
-        await apiRequest(`/api/jhimap/ai/conversations/${encodeURIComponent(id)}`, {
+        await apiRequest(`/api/deepsky/ai/conversations/${encodeURIComponent(id)}`, {
             method: "DELETE"
         });
         if (state.conversationId === id) resetChat();
@@ -208,7 +208,7 @@ async function sendMessage(message) {
     setBusy(true);
 
     try {
-        const response = await apiRequest("/api/jhimap/ai/chat", {
+        const response = await apiRequest("/api/deepsky/ai/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -286,7 +286,7 @@ onAuthStateChanged(auth, async user => {
     try {
         const [profile, statusResponse] = await Promise.all([
             getCurrentProfile(user),
-            apiRequest("/api/jhimap/ai/status")
+            apiRequest("/api/deepsky/ai/status")
         ]);
         const status = await statusResponse.json();
         elements.loginLink.style.display = "none";

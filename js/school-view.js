@@ -21,7 +21,7 @@ let currentUser = null;
     const canManagePost = () => post && currentUser && (post.uid === currentUser.uid || ["admin", "teacher"].includes(currentRole));
     const headers = async () => getAuthHeaders(currentUser);
     const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
-    const isFileAttachment = (link, href) => link?.type === "file" || href.includes("/api/jhimap/uploads/");
+    const isFileAttachment = (link, href) => link?.type === "file" || href.includes("/api/deepsky/uploads/");
 
     document.getElementById("logout-btn").onclick = async () => { if (confirm("로그아웃 하시겠습니까?")) { await signOut(auth); location.href = "index.html"; } };
     document.getElementById("btn-list").onclick = () => location.href = school.boardUrl;
@@ -51,7 +51,7 @@ let currentUser = null;
     });
 
     async function loadPost() {
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodedPostId}`, { headers: await headers() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodedPostId}`, { headers: await headers() });
         if (!res.ok) { location.replace("block.html"); return; }
         post = await res.json();
         document.title = `DEEP SKY | ${post.title || "게시글"}`;
@@ -109,7 +109,7 @@ let currentUser = null;
     }
 
     async function loadComments() {
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodedPostId}/comments`, { headers: await headers() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodedPostId}/comments`, { headers: await headers() });
         const list = document.getElementById("comment-list");
         if (!res.ok) { list.innerHTML = ""; return; }
         const comments = await res.json();
@@ -221,21 +221,21 @@ let currentUser = null;
         const input = document.getElementById("comment-input");
         const content = input.value.trim();
         if (!content) return;
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodedPostId}/comments`, { method:"POST", headers:{ ...(await headers()), "Content-Type":"application/json" }, body:JSON.stringify({ content, authorName:currentUserName }) });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodedPostId}/comments`, { method:"POST", headers:{ ...(await headers()), "Content-Type":"application/json" }, body:JSON.stringify({ content, authorName:currentUserName }) });
         if (res.ok) { input.value = ""; await loadComments(); }
         else alert("댓글 등록 권한이 없거나 오류가 발생했습니다.");
     }
 
     async function deleteComment(commentId) {
         if (!confirm("댓글을 삭제하시겠습니까?")) return;
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodedPostId}/comments/${encodeURIComponent(String(commentId))}`, { method:"DELETE", headers: await headers() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodedPostId}/comments/${encodeURIComponent(String(commentId))}`, { method:"DELETE", headers: await headers() });
         if (res.ok) await loadComments();
         else alert("댓글 삭제 권한이 없거나 오류가 발생했습니다.");
     }
 
     async function deletePost() {
         if (!confirm("게시글을 삭제하시겠습니까?")) return;
-        const res = await apiFetch(`/api/jhimap/board/${school.collection}/${encodedPostId}`, { method:"DELETE", headers: await headers() });
+        const res = await apiFetch(`/api/deepsky/board/${school.collection}/${encodedPostId}`, { method:"DELETE", headers: await headers() });
         if (res.ok) location.href = school.boardUrl;
         else alert("삭제 권한이 없거나 오류가 발생했습니다.");
     }

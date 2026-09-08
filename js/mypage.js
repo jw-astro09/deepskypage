@@ -124,7 +124,7 @@ function passwordErrorMessage(error) {
 async function loadBookmarks() {
     const list = document.getElementById("bookmark-list");
     try {
-        const response = await apiRequest("/api/jhimap/bookmarks", {}, currentUser);
+        const response = await apiRequest("/api/deepsky/bookmarks", {}, currentUser);
         renderPostList(list, await response.json(), "저장한 글이 없습니다.", true);
     } catch (error) {
         list.innerHTML = `<div class="empty-state">${escapeHtml(error.message)}</div>`;
@@ -134,7 +134,7 @@ async function loadBookmarks() {
 async function loadRecentViews() {
     const list = document.getElementById("recent-list");
     try {
-        const response = await apiRequest("/api/jhimap/recent-views", {}, currentUser);
+        const response = await apiRequest("/api/deepsky/recent-views", {}, currentUser);
         renderPostList(list, await response.json(), "최근 본 글이 없습니다.", false);
     } catch (error) {
         list.innerHTML = `<div class="empty-state">${escapeHtml(error.message)}</div>`;
@@ -164,7 +164,7 @@ function renderPostList(container, items, emptyMessage, removable) {
             remove.className = "btn";
             remove.textContent = "삭제";
             remove.addEventListener("click", async () => {
-                await apiRequest(`/api/jhimap/bookmarks/${item.collection_name}/${item.id}`, {
+                await apiRequest(`/api/deepsky/bookmarks/${item.collection_name}/${item.id}`, {
                     method: "DELETE"
                 }, currentUser);
                 await loadBookmarks();
@@ -202,7 +202,7 @@ document.getElementById("delete-account-btn").onclick = async () => {
     button.disabled = true;
     button.textContent = "처리 중...";
     try {
-        const response = await apiFetch("/api/jhimap/account", {
+        const response = await apiFetch("/api/deepsky/account", {
             method: "DELETE",
             headers: await authHeaders(currentUser)
         });
